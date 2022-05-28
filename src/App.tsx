@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import { Button } from "@mui/material";
+import "./App.css";
+import FirstComponent from "./components/FirstComponent";
+import LayOutContainer from "./containers/LayOutContainer";
+import Home from "./pages/Home";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { AppPages } from "./types";
+import Expenses from "./pages/Expenses";
 
 function App() {
+  // const [count, setCount] = useState(0);
+  // const [textValue, setTextValue] = useState("");
+  // const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setTextValue(event.target.value);
+  // };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <LayOutContainer>
+          <Routes>
+            <Route path={AppPages.Home} element={<Home />} />
+            <Route path={AppPages.Expenses} element={<Expenses />} />
+          </Routes>
+        </LayOutContainer>
+      </Router>
+    </>
   );
 }
 
