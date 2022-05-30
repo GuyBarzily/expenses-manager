@@ -6,11 +6,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import { Link } from "react-router-dom";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import InboxIcon from "@mui/icons-material/MoveToInbox";
-// import MailIcon from "@mui/icons-material/Mail";
+
 import { FC } from "react";
 import { AppPages } from "../types";
 
@@ -33,7 +29,7 @@ const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {
           <div style={{ minWidth: 100 }}>
             {linkList.map((link) => {
               return (
-                <div>
+                <div key={"button" + link.text}>
                   <Button component={Link} to={link.href}>
                     {link.text}
                   </Button>
