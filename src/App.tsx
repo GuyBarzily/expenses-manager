@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AppPages } from "./types";
 import Expenses from "./pages/Expenses";
+import SignUp from "./pages/SignUp";
+import SignIn from "./components/SignIn";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -15,15 +17,35 @@ function App() {
   // const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setTextValue(event.target.value);
   // };
+
+  const [loggedIn, setLoggedIn] = useState(false);
   return (
     <>
       <Router>
-        <LayOutContainer>
+        {!loggedIn && (
           <Routes>
-            <Route path={AppPages.Home} element={<Home />} />
-            <Route path={AppPages.Expenses} element={<Expenses />} />
+            <Route
+              path={AppPages.Home}
+              element={
+                <SignIn
+                  handleLogIn={() => {
+                    setLoggedIn(true);
+                  }}
+                />
+              }
+            />
+            <Route path={AppPages.SignUp} element={<SignUp />} />
           </Routes>
-        </LayOutContainer>
+        )}
+        {loggedIn && (
+          <LayOutContainer>
+            <Routes>
+              <Route path={AppPages.Home} element={<Home />} />
+              <Route path={AppPages.Expenses} element={<Expenses />} />
+              <Route path={AppPages.SignUp} element={<SignUp />} />
+            </Routes>
+          </LayOutContainer>
+        )}
       </Router>
     </>
   );

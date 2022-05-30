@@ -1,12 +1,19 @@
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import React from "react";
+import SignIn from "../components/SignIn";
+import TextBoxes from "../components/TextBoxes";
 
 const Home = () => {
   return (
     <div>
-      <Typography color="primary" variant="h2" textAlign="center">
-        Home page
+      <br />
+      <Typography color="primary" variant="h3" textAlign="center">
+        Welcome to Expenses Manager
       </Typography>
+      <br />
+      <br />
+      {/* <TextBoxes /> */}
+      {/* <SignIn /> */}
     </div>
   );
 };
