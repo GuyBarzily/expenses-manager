@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
+import { SignUpData } from "../types";
 import { Link as RouterLink } from "react-router-dom";
 
 const signin = {
@@ -44,9 +45,12 @@ export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if (!SignUpData.includes(data)) SignUpData.push(data);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
+      SignUpData: SignUpData[0].get("email"),
+      secondary: SignUpData,
     });
   };
 

@@ -15,6 +15,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
 import { ListItem } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { SignInData } from "../types";
+import { SignUpData } from "../types";
+import { useState } from "react";
+
 const signup = {
   href: AppPages.SignUp,
   text: "Sign Up",
@@ -42,12 +46,26 @@ const theme = createTheme();
 const SignIn: React.FC<SignInProps> = ({ handleLogIn }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
-    handleLogIn();
+    const data = new FormData(event.currentTarget);
+    let bol: boolean = false;
+    SignUpData.forEach((form) => {
+      if (
+        form.get("email") == data.get("email") &&
+        form.get("password") == data.get("password")
+      )
+        bol = true;
+    });
+    if (bol) {
+      console.log(data);
+      handleLogIn();
+    }
+    console.log({
+      // email: data.get("email"),
+      // password: data.get("password"),
+      //email: SignInData[0].get("email"),
+      // signup: SignUpData[1].get("email"),
+    });
+    // handleLogIn();
   };
 
   return (
