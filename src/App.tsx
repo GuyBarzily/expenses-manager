@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AppPages } from "./types";
 import Expenses from "./pages/Expenses";
 import SignUp from "./pages/SignUp";
-import SignIn from "./components/SignIn";
+import SignIn from "./pages/SignIn";
 
 function App() {
   // const [count, setCount] = useState(0);

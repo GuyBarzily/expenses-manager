@@ -1,7 +1,5 @@
 import { TextField, Typography } from "@mui/material";
 import React from "react";
-import SignIn from "../components/SignIn";
-import TextBoxes from "../components/TextBoxes";
 
 const Home = () => {
   return (
