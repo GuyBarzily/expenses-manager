@@ -16,5 +16,8 @@ export {SignInData};
 const SignUpData: Array<FormData> = [];
 export {SignUpData};
 
+const ExpensesData: Array<{}> = [];
+export {ExpensesData};
+
 // const [didSignedUp, setDidSignedUp] = useState(false);
 // export {didSignedUp}
