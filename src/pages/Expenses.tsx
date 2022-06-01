@@ -6,7 +6,12 @@ const Expenses = () => {
   return (
     <div>
       <div>
-        <Typography variant="h2" color="primary" textAlign="center">
+        <Typography
+          marginTop="50px"
+          variant="h2"
+          color="primary"
+          textAlign="center"
+        >
           Expenses
         </Typography>
       </div>

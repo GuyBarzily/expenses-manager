@@ -1,31 +1,53 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button, Input } from "@mui/material";
+import { Alert, Button, Dialog, Input, MenuItem } from "@mui/material";
 import { getEventListeners } from "events";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import { ExpensesData } from "../types";
+import { ExpensType } from "../types";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 export default function FormPropsTextFields() {
   const [descriptionValue, setDispriptionValue] = useState("");
   const [dateValue, setDateValue] = useState("");
   const [amountValue, setAmountValue] = useState("");
+  const [expensTypeValue, setExpenseTypeValue] = useState("");
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleError = () => {
+    setError(!error);
+  };
+
+  const handleSuccess = () => {
+    setSuccess(!success);
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log(data.get("outlined-required"));
-
-    ExpensesData.push({
-      descriptionValue: descriptionValue,
-      dateValue: dateValue,
-      amountValue: amountValue,
-    });
+    if (
+      descriptionValue !== "" &&
+      dateValue !== "" &&
+      amountValue !== "" &&
+      expensTypeValue !== ""
+    ) {
+      handleSuccess();
+      ExpensesData.push({
+        descriptionValue: descriptionValue,
+        dateValue: dateValue,
+        amountValue: amountValue,
+        expensTypeValue: expensTypeValue,
+      });
+    } else {
+      handleError();
+    }
     console.log(ExpensesData);
     setDispriptionValue("");
     setDateValue("");
     setAmountValue("");
+    setExpenseTypeValue("");
   };
   return (
     <Box
@@ -40,24 +62,46 @@ export default function FormPropsTextFields() {
       justifyContent="center"
     >
       <div>
+        <Dialog open={error} onClose={handleError}>
+          <Alert severity="error">Fill all boxes</Alert>
+        </Dialog>
+        <Dialog open={success} onClose={handleSuccess}>
+          <Alert security="success">Expens added</Alert>
+        </Dialog>
         <TextField
           onChange={(e) => setDispriptionValue(e.target.value)}
           required
           value={descriptionValue}
-          id="outlined-required"
+          id="discription-input"
           label="Description"
-          name="outlined-required"
+          name="descriptionValue"
         />
         <TextField
           onChange={(e) => setDateValue(e.target.value)}
           required
           value={dateValue}
-          id="outlined-password-input"
+          id="date-input"
           type="date"
         />
         <TextField
-          onChange={(e) => setAmountValue(e.target.value)}
           required
+          id="expens-type-input"
+          select
+          label="Select"
+          value={expensTypeValue}
+          onChange={(e) => setExpenseTypeValue(e.target.value)}
+          helperText="Please select expens type"
+        >
+          {ExpensType.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          required
+          onChange={(e) => setAmountValue(e.target.value)}
           value={amountValue}
           id="amount"
           label="Amount"
@@ -73,20 +117,13 @@ export default function FormPropsTextFields() {
             shrink: true,
           }}
         />
-        {/*<TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        /> */}
       </div>
       <div>
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 2, mb: 2 }}
         >
           Submit
         </Button>

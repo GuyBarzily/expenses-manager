@@ -8,10 +8,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { ExpensesData } from "../types";
 import { styled } from "@mui/material/styles";
+import { Box, TableSortLabel } from "@mui/material";
+import { margin } from "@mui/system";
+import { ArrowUpward } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "gray",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -34,27 +37,34 @@ export default function CustomizedTables() {
     return parseInt(data1.amountValue) - parseInt(data2.amountValue);
   });
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Description</StyledTableCell>
-            <StyledTableCell>Date</StyledTableCell>
-            <StyledTableCell>Amount $</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {ExpensesData.map((row) => (
-            <StyledTableRow key={row.descriptionValue}>
-              <StyledTableCell component="th" scope="row">
-                {row.descriptionValue}
+    <Box margin="100px">
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>
+                <TableSortLabel direction="asc">Description</TableSortLabel>
+                {/* Description */}
               </StyledTableCell>
-              <StyledTableCell>{row.dateValue}</StyledTableCell>
-              <StyledTableCell>{row.amountValue}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              <StyledTableCell>Date</StyledTableCell>
+              <StyledTableCell>Expens Type</StyledTableCell>
+              <StyledTableCell>Amount $</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {ExpensesData.map((row) => (
+              <StyledTableRow key={row.descriptionValue}>
+                <StyledTableCell component="th" scope="row">
+                  {row.descriptionValue}
+                </StyledTableCell>
+                <StyledTableCell>{row.dateValue}</StyledTableCell>
+                <StyledTableCell>{row.expensTypeValue}</StyledTableCell>
+                <StyledTableCell>{row.amountValue}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
