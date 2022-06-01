@@ -9,6 +9,13 @@ export enum AppPages {
     
 }
 
+const IncomeData :Array <{
+    "descriptionValue" : string,
+    "dateValue" : string,
+    "amountValue" : string,
+    "incomeTypeValue" : string,
+}> = [];
+export {IncomeData}
 
 const SignInData: Array<FormData> = [];
 export {SignInData};
@@ -20,7 +27,7 @@ const ExpensesData: Array<{
     "descriptionValue" :string,
     "dateValue" : string,
     "amountValue" :string,
-    "expensTypeValue" :string,
+    "expensTypeValue" :string
 
 }> = [];
 export {ExpensesData};
@@ -42,6 +49,10 @@ const Currencies = [
       value: 'JPY',
       label: '¥',
     },
+    {
+        value: 'NIS',
+        label: "₪",
+    }
   ];
 export {Currencies};
 

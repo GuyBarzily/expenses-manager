@@ -1,11 +1,21 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Alert, Button, Dialog, Input, MenuItem } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Dialog,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { getEventListeners } from "events";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
-import { ExpensesData } from "../types";
+import { Currencies, IncomeData } from "../types";
 import { ExpensType } from "../types";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
@@ -16,6 +26,7 @@ export default function FormPropsTextFields() {
   const [expensTypeValue, setExpenseTypeValue] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [currenciesValue, setCurrenciesValue] = useState("");
 
   const handleError = () => {
     setError(!error);
@@ -25,25 +36,39 @@ export default function FormPropsTextFields() {
     setSuccess(!success);
   };
 
+  const formatAmount = (amount: string) => {
+    var str = amount.split(".");
+    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let cur: string = "";
+    Currencies.forEach((currency) => {
+      if (currency.value === currenciesValue) cur = currency.label;
+    });
+    str.push("  " + cur);
+    console.log(str);
+    return str.join("");
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       descriptionValue !== "" &&
       dateValue !== "" &&
       amountValue !== "" &&
-      expensTypeValue !== ""
+      expensTypeValue !== "" &&
+      currenciesValue !== ""
     ) {
+      // console.log(formatAmount(amountValue));
       handleSuccess();
-      ExpensesData.push({
+      IncomeData.push({
         descriptionValue: descriptionValue,
         dateValue: dateValue,
-        amountValue: amountValue,
-        expensTypeValue: expensTypeValue,
+        amountValue: formatAmount(amountValue),
+        incomeTypeValue: expensTypeValue,
       });
     } else {
       handleError();
     }
-    console.log(ExpensesData);
+    console.log(IncomeData);
     setDispriptionValue("");
     setDateValue("");
     setAmountValue("");
@@ -83,22 +108,41 @@ export default function FormPropsTextFields() {
           id="date-input"
           type="date"
         />
-        <TextField
-          required
-          id="expens-type-input"
-          select
-          label="Select"
-          value={expensTypeValue}
-          onChange={(e) => setExpenseTypeValue(e.target.value)}
-          helperText="Please select expens type"
-        >
-          {ExpensType.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="expens-type-input">Expense Type</InputLabel>
+          <Select
+            labelId="expens-type-select"
+            id="expens-type-select"
+            value={expensTypeValue}
+            label="Expense Type"
+            onChange={(e) => setExpenseTypeValue(e.target.value)}
+          >
+            {ExpensType.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>choose expens type</FormHelperText>
+        </FormControl>
 
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="currency-input">Currency</InputLabel>
+          <Select
+            labelId="currency-select"
+            id="currency-select"
+            value={currenciesValue}
+            label="Currencies"
+            onChange={(e) => setCurrenciesValue(e.target.value)}
+          >
+            {Currencies.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>choose expens type</FormHelperText>
+        </FormControl>
         <TextField
           required
           onChange={(e) => setAmountValue(e.target.value)}
@@ -106,13 +150,6 @@ export default function FormPropsTextFields() {
           id="amount"
           label="Amount"
           type="number"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AttachMoneyIcon />
-              </InputAdornment>
-            ),
-          }}
           InputLabelProps={{
             shrink: true,
           }}
