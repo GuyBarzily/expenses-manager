@@ -1,38 +1,73 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Charts from "../components/Charts";
+import ExpensesTable from "../components/ExpensesTable";
 import TextBoxes from "../components/ExpensesTextBoxes";
+import HomeTables from "../components/HomeTables";
 import IncomeTextBoxes from "../components/IncomeTextBoxes";
+import { BaseFinancialState, FinancialItem } from "../types";
 
 const Home = () => {
+  const [financialState, setFinancialState] = useState(BaseFinancialState);
+  const handleAddExpenses = (financialItem: FinancialItem) => {
+    const newExpenses = [...financialState.expenses, financialItem];
+    setFinancialState({
+      ...financialState,
+      expenses: newExpenses,
+    });
+  };
+  const handleAddIncome = (financialItem: FinancialItem) => {
+    const newIncome = [...financialState.income, financialItem];
+    setFinancialState({
+      ...financialState,
+      income: newIncome,
+    });
+  };
+  console.log(financialState.income);
   return (
-    <div>
-      <br />
+    <Box>
       <div>
-        <Typography color="primary" variant="h3" textAlign="center">
+        <Typography
+          //marginTop="20px"
+          color="primary.black"
+          variant="h3"
+          textAlign="center"
+          fontFamily={"Cursive"}
+        >
           Welcome to Expenses Manager
         </Typography>
         <br />
-        <Typography color="primary" variant="h4" textAlign="center">
+        <Typography
+          color="primary.black"
+          variant="h4"
+          textAlign="center"
+          fontFamily={"Fantasy"}
+        >
           add expense
         </Typography>
       </div>
       <br />
       <div>
-        <TextBoxes />
+        <TextBoxes handleSubmit={handleAddExpenses} />
       </div>
-
-      <div>{/* <Charts /> */}</div>
       <Box marginTop="50px">
-        <Typography color="primary" variant="h4" textAlign="center">
+        <Typography
+          color="primary.black"
+          variant="h4"
+          textAlign="center"
+          fontFamily={"Fantasy"}
+        >
           add income
         </Typography>
         <br />
         <div>
-          <IncomeTextBoxes />
+          <IncomeTextBoxes handleSubmit={handleAddIncome} />
+        </div>
+        <div>
+          <HomeTables financialState={financialState} />
         </div>
       </Box>
-    </div>
+    </Box>
   );
 };
 

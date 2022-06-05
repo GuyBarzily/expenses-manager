@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { ExpensesData } from "../types";
+import { IncomeData } from "../types";
 import { styled } from "@mui/material/styles";
 import { Box, TableSortLabel } from "@mui/material";
 import { margin } from "@mui/system";
@@ -32,16 +32,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const formatAmount = (amount: string, currency: string) => {
-  var str = amount.split(".");
-  str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  str.push("  " + currency);
-  console.log(str);
-  return str.join("");
-};
-
 export default function CustomizedTables() {
-  ExpensesData.sort((data1, data2) => {
+  IncomeData.sort((data1, data2) => {
     return parseInt(data1.amountValue) - parseInt(data2.amountValue);
   });
   return (
@@ -55,21 +47,19 @@ export default function CustomizedTables() {
                 {/* Description */}
               </StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Expens Type</StyledTableCell>
+              <StyledTableCell>Income Type</StyledTableCell>
               <StyledTableCell>Amount $</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ExpensesData.map((row) => (
+            {IncomeData.map((row) => (
               <StyledTableRow key={row.descriptionValue}>
                 <StyledTableCell component="th" scope="row">
                   {row.descriptionValue}
                 </StyledTableCell>
                 <StyledTableCell>{row.dateValue}</StyledTableCell>
-                <StyledTableCell>{row.expensTypeValue}</StyledTableCell>
-                <StyledTableCell>
-                  {formatAmount(row.amountValue, row.currencyValue)}
-                </StyledTableCell>
+                <StyledTableCell>{row.incomeTypeValue}</StyledTableCell>
+                <StyledTableCell>{row.amountValue}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

@@ -4,9 +4,7 @@ export enum AppPages {
     Home = "/",
     Expenses = "/exp",
     SignUp = "/signup",
-
-
-    
+    Income = "/income",
 }
 
 const IncomeData :Array <{
@@ -28,33 +26,76 @@ const ExpensesData: Array<{
     "dateValue" : string,
     "amountValue" :string,
     "expensTypeValue" :string
+    "currencyValue" :string
 
 }> = [];
 export {ExpensesData};
 
-const Currencies = [
-    {
-      value: 'USD',
-      label: '$',
-    },
-    {
-      value: 'EUR',
-      label: '€',
-    },
-    {
-      value: 'BTC',
-      label: '฿',
-    },
-    {
-      value: 'JPY',
-      label: '¥',
-    },
-    {
-        value: 'NIS',
-        label: "₪",
-    }
-  ];
-export {Currencies};
+export const BaseFinancialState: FinancialState = {
+    income :[],
+    expenses :[],
+}
+
+    // {
+    //   value: 'USD',
+    //   label: '$',
+    //   income:0,
+    //   expense:0
+    // },
+    // {
+    //   value: 'EUR',
+    //   label: '€',
+    //   income:0,
+    //   expense:0
+    // },
+    // {
+    //   value: 'BTC',
+    //   label: '฿',
+    //   income:0,
+    //   expense:0
+    // },
+    // {
+    //   value: 'JPY',
+    //   label: '¥',
+    //   income:0,
+    //   expense:0
+    // },
+    // {
+    //     value: 'NIS',
+    //     label: "₪",
+    //     income:0,
+    //   expense:0
+    // }
+//   ];
+
+  export interface FinancialState {
+      expenses: FinancialItem[],
+      income: FinancialItem[],
+
+
+  }
+  export interface FinancialItem {
+      currency?: Currency,
+      currencySign: CurrencySign,
+      value: number,
+
+  }
+
+  export enum Currency {
+      USD = "USD",
+      EUR = "EUR",
+      BTC = "BTC",
+      JPY = "JPY",
+      NIS = "NIS",
+  }
+
+  export enum CurrencySign {
+      USD = "$",
+      EUR = "€",
+      BTC = "฿",
+      JPY = "¥",
+      NIS = "₪",
+  }
 
 const ExpensType = [
     {
@@ -79,4 +120,16 @@ const ExpensType = [
 ]
 
 export {ExpensType}
+
+const IncomeType = [
+    {
+        value: 'Salary',
+        label: 'Salary'
+    },
+    {
+        value: 'Rental',
+        label: 'Rental'
+    }
+]
+export {IncomeType}
 

@@ -1,8 +1,9 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import ExpensesTable from "../components/ExpensesTable";
+import Table from "../components/ExpensesTable";
+import IncomeTable from "../components/IncomeTable";
 
-const Expenses = () => {
+const Income = () => {
   return (
     <div>
       <div>
@@ -11,16 +12,17 @@ const Expenses = () => {
           variant="h2"
           color="primary"
           textAlign="center"
+          fontFamily="Helvetica Neue"
         >
-          Expenses
+          Income
         </Typography>
       </div>
       <br />
       <div>
-        <ExpensesTable />
+        <IncomeTable />
       </div>
     </div>
   );
 };
 
-export default Expenses;
+export default Income;

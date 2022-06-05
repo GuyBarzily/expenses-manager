@@ -6,10 +6,11 @@ import FirstComponent from "./components/FirstComponent";
 import LayOutContainer from "./containers/LayOutContainer";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AppPages } from "./types";
+import { AppPages, IncomeData } from "./types";
 import Expenses from "./pages/Expenses";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Income from "./pages/Income";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -42,6 +43,7 @@ function App() {
             <Routes>
               <Route path={AppPages.Home} element={<Home />} />
               <Route path={AppPages.Expenses} element={<Expenses />} />
+              <Route path={AppPages.Income} element={<Income />} />
               <Route path={AppPages.SignUp} element={<SignUp />} />
             </Routes>
           </LayOutContainer>

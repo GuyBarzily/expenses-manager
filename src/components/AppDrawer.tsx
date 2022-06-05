@@ -19,6 +19,10 @@ const linkList: ListItem[] = [
     href: AppPages.Expenses,
     text: "Expenses",
   },
+  {
+    href: AppPages.Income,
+    text: "Income",
+  },
 ];
 
 const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {

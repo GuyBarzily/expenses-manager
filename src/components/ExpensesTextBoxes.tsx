@@ -15,11 +15,13 @@ import {
 import { getEventListeners } from "events";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
-import { Currencies, ExpensesData } from "../types";
+import { CurrencySign, ExpensesData, FinancialItem } from "../types";
 import { ExpensType } from "../types";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-export default function FormPropsTextFields() {
+const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
+  handleSubmit: handleSubmitProp,
+}) => {
   const [descriptionValue, setDispriptionValue] = useState("");
   const [dateValue, setDateValue] = useState("");
   const [amountValue, setAmountValue] = useState("");
@@ -34,18 +36,7 @@ export default function FormPropsTextFields() {
 
   const handleSuccess = () => {
     setSuccess(!success);
-  };
-
-  const formatAmount = (amount: string) => {
-    var str = amount.split(".");
-    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    let cur: string = "";
-    Currencies.forEach((currency) => {
-      if (currency.value === currenciesValue) cur = currency.label;
-    });
-    str.push("  " + cur);
-    console.log(str);
-    return str.join("");
+    setError(false);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -62,8 +53,14 @@ export default function FormPropsTextFields() {
       ExpensesData.push({
         descriptionValue: descriptionValue,
         dateValue: dateValue,
-        amountValue: formatAmount(amountValue),
+        amountValue: parseInt(amountValue).toLocaleString(),
         expensTypeValue: expensTypeValue,
+        currencyValue: currenciesValue,
+      });
+
+      handleSubmitProp({
+        value: parseInt(amountValue),
+        currencySign: currenciesValue as CurrencySign,
       });
     } else {
       handleError();
@@ -73,6 +70,7 @@ export default function FormPropsTextFields() {
     setDateValue("");
     setAmountValue("");
     setExpenseTypeValue("");
+    setCurrenciesValue("");
   };
   return (
     <Box
@@ -87,13 +85,8 @@ export default function FormPropsTextFields() {
       justifyContent="center"
     >
       <div>
-        <Dialog open={error} onClose={handleError}>
-          <Alert severity="error">Fill all boxes</Alert>
-        </Dialog>
-        <Dialog open={success} onClose={handleSuccess}>
-          <Alert security="success">Expens added</Alert>
-        </Dialog>
         <TextField
+          error={error}
           onChange={(e) => setDispriptionValue(e.target.value)}
           required
           value={descriptionValue}
@@ -102,6 +95,7 @@ export default function FormPropsTextFields() {
           name="descriptionValue"
         />
         <TextField
+          error={error}
           onChange={(e) => setDateValue(e.target.value)}
           required
           value={dateValue}
@@ -111,6 +105,7 @@ export default function FormPropsTextFields() {
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="expens-type-input">Expense Type</InputLabel>
           <Select
+            error={error}
             labelId="expens-type-select"
             id="expens-type-select"
             value={expensTypeValue}
@@ -129,21 +124,23 @@ export default function FormPropsTextFields() {
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="currency-input">Currency</InputLabel>
           <Select
+            error={error}
             labelId="currency-select"
             id="currency-select"
             value={currenciesValue}
             label="Currencies"
             onChange={(e) => setCurrenciesValue(e.target.value)}
           >
-            {Currencies.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {Object.values(CurrencySign).map((sign) => (
+              <MenuItem key={sign} value={sign}>
+                {sign}
               </MenuItem>
             ))}
           </Select>
           <FormHelperText>choose expens type</FormHelperText>
         </FormControl>
         <TextField
+          error={error}
           required
           onChange={(e) => setAmountValue(e.target.value)}
           value={amountValue}
@@ -154,6 +151,11 @@ export default function FormPropsTextFields() {
             shrink: true,
           }}
         />
+        {error && (
+          <Alert sx={{ width: 120 }} severity="error">
+            Fill all boxes
+          </Alert>
+        )}
       </div>
       <div>
         <Button
@@ -167,4 +169,10 @@ export default function FormPropsTextFields() {
       </div>
     </Box>
   );
+};
+
+export default FormPropsTextFields;
+
+interface ExpenseTextBoxesProps {
+  handleSubmit: (financialItem: FinancialItem) => void;
 }
