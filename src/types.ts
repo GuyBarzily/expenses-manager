@@ -78,6 +78,10 @@ export const BaseFinancialState: FinancialState = {
       currency?: Currency,
       currencySign: CurrencySign,
       value: number,
+      descriptionValue: string,
+      type: string,
+      date: string,
+
 
   }
 
