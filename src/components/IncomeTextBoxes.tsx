@@ -74,6 +74,9 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
       handleSubmitProp({
         value: parseInt(amountValue),
         currencySign: currenciesValue as CurrencySign,
+        descriptionValue: descriptionValue,
+        type: expensTypeValue,
+        date: dateValue,
       });
     } else {
       handleError();

@@ -1,6 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Charts from "../components/Charts";
 import ExpensesTable from "../components/ExpensesTable";
 import TextBoxes from "../components/ExpensesTextBoxes";
 import HomeTables from "../components/HomeTables";

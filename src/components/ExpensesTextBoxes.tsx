@@ -15,7 +15,12 @@ import {
 import { getEventListeners } from "events";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
-import { CurrencySign, ExpensesData, FinancialItem } from "../types";
+import {
+  BaseFinancialState,
+  CurrencySign,
+  ExpensesData,
+  FinancialItem,
+} from "../types";
 import { ExpensType } from "../types";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
@@ -61,11 +66,16 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
       handleSubmitProp({
         value: parseInt(amountValue),
         currencySign: currenciesValue as CurrencySign,
+        descriptionValue: descriptionValue,
+        type: expensTypeValue,
+        date: dateValue,
       });
     } else {
       handleError();
     }
-    console.log(ExpensesData);
+
+    console.log(BaseFinancialState);
+
     setDispriptionValue("");
     setDateValue("");
     setAmountValue("");
