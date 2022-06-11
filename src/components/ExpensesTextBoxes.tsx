@@ -4,17 +4,13 @@ import TextField from "@mui/material/TextField";
 import {
   Alert,
   Button,
-  Dialog,
   FormControl,
   FormHelperText,
-  Input,
   InputLabel,
   MenuItem,
   Select,
 } from "@mui/material";
-import { getEventListeners } from "events";
 import { useState } from "react";
-import InputAdornment from "@mui/material/InputAdornment";
 import {
   BaseFinancialState,
   CurrencySign,
@@ -22,7 +18,6 @@ import {
   FinancialItem,
 } from "../types";
 import { ExpensType } from "../types";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
@@ -53,7 +48,6 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
       expensTypeValue !== "" &&
       currenciesValue !== ""
     ) {
-      // console.log(formatAmount(amountValue));
       handleSuccess();
       ExpensesData.push({
         descriptionValue: descriptionValue,
@@ -147,7 +141,7 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>choose expens type</FormHelperText>
+          <FormHelperText>choose currency type</FormHelperText>
         </FormControl>
         <TextField
           error={error}

@@ -4,10 +4,8 @@ import TextField from "@mui/material/TextField";
 import {
   Alert,
   Button,
-  Dialog,
   FormControl,
   FormHelperText,
-  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -26,6 +24,27 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currenciesValue, setCurrenciesValue] = useState("");
+  const valitateInput: Function = () => {
+    if (
+      descriptionValue === "" ||
+      dateValue === "" ||
+      amountValue === "" ||
+      expensTypeValue === "" ||
+      currenciesValue === ""
+    )
+      return false;
+
+    let date: string[] = dateValue.split("-");
+    let currentDate: Date = new Date();
+    if (
+      parseInt(date[0]) > currentDate.getFullYear() ||
+      parseInt(date[0]) < 1900
+    ) {
+      return false;
+    }
+
+    return true;
+  };
 
   const handleError = () => {
     setError(!error);
@@ -36,39 +55,16 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
     setError(false);
   };
 
-  // const formatAmount = (amount: string) => {
-  //   var str = amount.split(".");
-  //   str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  //   let cur: string = "";
-  //   Currencies.forEach((currency) => {
-  //     if (currency.value === currenciesValue) {
-  //       cur = currency.label;
-  //       currency.income += parseInt(amountValue);
-  //       console.log(cur + currency.income);
-  //     }
-  //   });
-  //   str.push("  " + cur);
-  //   // console.log("cur" + Currencies.);
-  //   console.log(str);
-  //   return str.join("");
-  // };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (
-      descriptionValue !== "" &&
-      dateValue !== "" &&
-      amountValue !== "" &&
-      expensTypeValue !== "" &&
-      currenciesValue !== ""
-    ) {
-      // console.log(formatAmount(amountValue));
+    if (valitateInput()) {
       handleSuccess();
       IncomeData.push({
         descriptionValue: descriptionValue,
         dateValue: dateValue,
         amountValue: parseInt(amountValue).toLocaleString(),
         incomeTypeValue: expensTypeValue,
+        currencyValue: currenciesValue,
       });
 
       handleSubmitProp({
@@ -135,7 +131,7 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>choose expens type</FormHelperText>
+          <FormHelperText>choose income type</FormHelperText>
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -154,7 +150,7 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>choose expens type</FormHelperText>
+          <FormHelperText>choose currency type</FormHelperText>
         </FormControl>
         <TextField
           error={error}
@@ -169,8 +165,8 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
           }}
         />
         {error && (
-          <Alert sx={{ width: 120 }} severity="error">
-            Fill all boxes
+          <Alert sx={{ width: 150 }} severity="error">
+            incorrect input
           </Alert>
         )}
       </div>
