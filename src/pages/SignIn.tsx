@@ -59,13 +59,7 @@ const SignIn: React.FC<SignInProps> = ({ handleLogIn }) => {
       console.log(data);
       handleLogIn();
     }
-    console.log({
-      // email: data.get("email"),
-      // password: data.get("password"),
-      //email: SignInData[0].get("email"),
-      // signup: SignUpData[1].get("email"),
-    });
-    // handleLogIn();
+    handleLogIn();
   };
 
   return (

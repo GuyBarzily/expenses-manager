@@ -32,6 +32,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const formatAmount = (amount: string, currency: string) => {
+  var str = amount.split(".");
+  str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  str.push("  " + currency);
+  return str.join("");
+};
+
 export default function CustomizedTables() {
   IncomeData.sort((data1, data2) => {
     return parseInt(data1.amountValue) - parseInt(data2.amountValue);
@@ -53,13 +60,23 @@ export default function CustomizedTables() {
           </TableHead>
           <TableBody>
             {IncomeData.map((row) => (
-              <StyledTableRow key={row.descriptionValue}>
+              <StyledTableRow
+                key={
+                  row.descriptionValue +
+                  row.dateValue +
+                  row.incomeTypeValue +
+                  row.amountValue +
+                  Date.now()
+                }
+              >
                 <StyledTableCell component="th" scope="row">
                   {row.descriptionValue}
                 </StyledTableCell>
                 <StyledTableCell>{row.dateValue}</StyledTableCell>
                 <StyledTableCell>{row.incomeTypeValue}</StyledTableCell>
-                <StyledTableCell>{row.amountValue}</StyledTableCell>
+                <StyledTableCell>
+                  {formatAmount(row.amountValue, row.currencyValue)}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

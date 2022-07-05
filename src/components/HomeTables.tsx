@@ -11,6 +11,7 @@ import { FinancialState, CurrencySign } from "../types";
 
 const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
   let i: number = 0;
+  console.log(financialState);
   return (
     <div style={{ width: "", margin: "5%" }}>
       <TableContainer component={Paper}>

@@ -1,15 +1,27 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ExpensesTable from "../components/ExpensesTable";
 import TextBoxes from "../components/ExpensesTextBoxes";
 import HomeTables from "../components/HomeTables";
 import IncomeTextBoxes from "../components/IncomeTextBoxes";
-import { BaseFinancialState, FinancialItem } from "../types";
+import {
+  BaseFinancialState,
+  FinancialItem,
+  FinancialState,
+  FinancialStateContext,
+  SetFinancialStateContext,
+} from "../types";
 
 const Home = () => {
-  const [financialState, setFinancialState] = useState(BaseFinancialState);
+  // const [financialState, setFinancialState] = useState(BaseFinancialState);
+
+  const financialState = useContext(FinancialStateContext);
+  const setFinancialState = useContext(SetFinancialStateContext);
+
   const handleAddExpenses = (financialItem: FinancialItem) => {
     const newExpenses = [...financialState.expenses, financialItem];
+    if (!setFinancialState)
+      throw new Error("setFinancialState was not initialized");
     setFinancialState({
       ...financialState,
       expenses: newExpenses,
@@ -17,12 +29,14 @@ const Home = () => {
   };
   const handleAddIncome = (financialItem: FinancialItem) => {
     const newIncome = [...financialState.income, financialItem];
+    if (!setFinancialState)
+      throw new Error("setFinancialState was not initialized");
     setFinancialState({
       ...financialState,
       income: newIncome,
     });
   };
-  console.log(financialState.income);
+
   return (
     <Box>
       <div>
@@ -33,7 +47,7 @@ const Home = () => {
           textAlign="center"
           fontFamily={"Cursive"}
         >
-          Welcome to Expenses Manager
+          Welcome to your financial manager
         </Typography>
         <br />
         <Typography

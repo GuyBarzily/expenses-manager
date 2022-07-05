@@ -36,7 +36,6 @@ const formatAmount = (amount: string, currency: string) => {
   var str = amount.split(".");
   str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   str.push("  " + currency);
-  console.log(str);
   return str.join("");
 };
 
@@ -61,7 +60,15 @@ export default function CustomizedTables() {
           </TableHead>
           <TableBody>
             {ExpensesData.map((row) => (
-              <StyledTableRow key={row.descriptionValue}>
+              <StyledTableRow
+                key={
+                  row.descriptionValue +
+                  row.dateValue +
+                  row.expensTypeValue +
+                  row.amountValue +
+                  Date.now()
+                }
+              >
                 <StyledTableCell component="th" scope="row">
                   {row.descriptionValue}
                 </StyledTableCell>

@@ -1,8 +1,11 @@
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import ExpensesTable from "../components/ExpensesTable";
+import { FinancialStateContext } from "../types";
 
 const Expenses = () => {
+  const financialState = useContext(FinancialStateContext);
+  console.log(financialState);
   return (
     <div>
       <div>

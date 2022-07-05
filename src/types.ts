@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 
 export enum AppPages {
     Home = "/",
@@ -12,6 +12,7 @@ const IncomeData :Array <{
     "dateValue" : string,
     "amountValue" : string,
     "incomeTypeValue" : string,
+    "currencyValue" :string
 }> = [];
 export {IncomeData}
 
@@ -35,6 +36,10 @@ export const BaseFinancialState: FinancialState = {
     income :[],
     expenses :[],
 }
+
+export const FinancialStateContext = createContext(BaseFinancialState);
+
+export const SetFinancialStateContext = createContext<React.Dispatch<React.SetStateAction<FinancialState>> | null>(null);
 
     // {
     //   value: 'USD',
