@@ -17,15 +17,13 @@ import { SignUpData } from "../types";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+const hash = require("object-hash");
 
 const signin = {
   href: AppPages.Home,
   text: "Sign in",
 };
 
-const api = axios.create({
-  baseURL: "http://localhost:8080/hello",
-});
 
 function Copyright(props: any) {
   return (
@@ -47,7 +45,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+const SignUp: React.FC<SignUpProps> = ({ handleSignUp }) => {
   const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,16 +55,11 @@ export default function SignUp() {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
-      password: data.get("password"),
+      password: hash(data.get("password")),
     };
     setLoading(true);
     const res = await axios.post("http://localhost:8080/user", user);
     console.log("res data " + res.data);
-    if (res.data) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
     setLoading(false);
   };
   if (loading) {
@@ -169,4 +162,10 @@ export default function SignUp() {
       </Container>
     </ThemeProvider>
   );
+}
+
+export default SignUp;
+
+interface SignUpProps {
+  handleSignUp: () => void;
 }

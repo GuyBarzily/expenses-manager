@@ -19,6 +19,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    expenses: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );

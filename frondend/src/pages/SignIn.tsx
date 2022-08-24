@@ -13,11 +13,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
-import { ListItem } from "@mui/material";
+import { CircularProgress, ListItem } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 import { SignInData } from "../types";
 import { SignUpData } from "../types";
 import { useState } from "react";
+const hash = require("object-hash");
+
 
 const signup = {
   href: AppPages.SignUp,
@@ -44,24 +47,28 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 const SignIn: React.FC<SignInProps> = ({ handleLogIn }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = React.useState(false);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    let bol: boolean = false;
-    SignUpData.forEach((form) => {
-      if (
-        form.get("email") == data.get("email") &&
-        form.get("password") == data.get("password")
-      )
-        bol = true;
-    });
-    if (bol) {
-      console.log(data);
-      handleLogIn();
+    const user = {
+      email: data.get("email"),
+      password: hash(data.get("password"))
+    }
+    setLoading(true);
+    const res = await axios.post("http://localhost:8080/sign-in", user);
+    console.log(res.data);
+    setLoading(false);
+    if(res.data === true)
+    {
+      const emailVar = {email:data.get("email") }
+      window.localStorage.setItem( "userData",JSON.stringify(emailVar));
     }
     handleLogIn();
   };
-
+  if (loading) {
+    return <CircularProgress />;
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

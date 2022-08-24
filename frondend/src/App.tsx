@@ -18,6 +18,7 @@ function App() {
   const [financialState, setFinancialState] = useState(BaseFinancialState);
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
   return (
     <>
       <Router>
@@ -33,7 +34,10 @@ function App() {
                 />
               }
             />
-            <Route path={AppPages.SignUp} element={<SignUp />} />
+            <Route path={AppPages.SignUp} element={
+            <SignUp handleSignUp={() => {
+              setSignedUp(true);
+            }} />} />
           </Routes>
         )}
         {loggedIn && (
@@ -44,7 +48,9 @@ function App() {
                   <Route path={AppPages.Home} element={<Home />} />
                   <Route path={AppPages.Expenses} element={<Expenses />} />
                   <Route path={AppPages.Income} element={<Income />} />
-                  <Route path={AppPages.SignUp} element={<SignUp />} />
+                  <Route path={AppPages.SignUp} element={<SignUp handleSignUp={() => {
+              setSignedUp(true);
+            }}  />} />
                 </Routes>
               </LayOutContainer>
             </SetFinancialStateContext.Provider>
