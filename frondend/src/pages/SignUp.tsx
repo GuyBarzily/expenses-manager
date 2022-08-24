@@ -53,8 +53,6 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log(data.get("email"));
-    // if (!SignUpData.includes(data)) SignUpData.push(data);
     const user = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
