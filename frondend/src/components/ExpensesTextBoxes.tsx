@@ -18,6 +18,7 @@ import {
   FinancialItem,
 } from "../types";
 import { ExpensType } from "../types";
+import { addExpenseAxios } from "../axios";
 
 const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
@@ -30,6 +31,19 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   const [success, setSuccess] = useState(false);
   const [currenciesValue, setCurrenciesValue] = useState("");
 
+  const validateInput: Function = () => {
+    if(
+      descriptionValue !== "" &&
+      dateValue !== "" &&
+      amountValue !== "" &&
+      expensTypeValue !== "" &&
+      currenciesValue !== ""
+    ){
+        return true;
+    }
+    return false;
+  };
+
   const handleError = () => {
     setError(!error);
   };
@@ -39,23 +53,24 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
     setError(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
-      descriptionValue !== "" &&
-      dateValue !== "" &&
-      amountValue !== "" &&
-      expensTypeValue !== "" &&
-      currenciesValue !== ""
-    ) {
+     validateInput()) {
       handleSuccess();
+      let a = localStorage.getItem("userData");
+      const user = JSON.parse(a??"");
       ExpensesData.push({
+        userData:user.email,
         descriptionValue: descriptionValue,
         dateValue: dateValue,
         amountValue: parseInt(amountValue).toLocaleString(),
         expensTypeValue: expensTypeValue,
         currencyValue: currenciesValue,
       });
+
+      const current = ExpensesData[ExpensesData.length-1];
+      const res = await addExpenseAxios(current);
 
       handleSubmitProp({
         value: parseInt(amountValue),

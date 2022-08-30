@@ -6,12 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { IncomeData } from "../types";
+import { FinancialStateContext, IncomeData } from "../types";
 import { styled } from "@mui/material/styles";
 import { Box, TableSortLabel } from "@mui/material";
-import { margin } from "@mui/system";
-import { ArrowUpward } from "@mui/icons-material";
-
+import { useContext } from "react";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "gray",
@@ -32,16 +30,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const formatAmount = (amount: string, currency: string) => {
+const formatAmount = (amount: string, currencySign: string) => {
   var str = amount.split(".");
   str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  str.push("  " + currency);
+  str.push("      " + currencySign);
   return str.join("");
 };
 
-export default function CustomizedTables() {
+const CustomizedTables = () => {
+  const financialState = useContext(FinancialStateContext);
+  const IncomeData = [...financialState.income];
   IncomeData.sort((data1, data2) => {
-    return parseInt(data1.amountValue) - parseInt(data2.amountValue);
+    return data1.value - data2.value;
   });
   return (
     <Box margin="100px">
@@ -55,7 +55,7 @@ export default function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Income Type</StyledTableCell>
-              <StyledTableCell>Amount $</StyledTableCell>
+              <StyledTableCell>Amount </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -63,19 +63,19 @@ export default function CustomizedTables() {
               <StyledTableRow
                 key={
                   row.descriptionValue +
-                  row.dateValue +
-                  row.incomeTypeValue +
-                  row.amountValue +
-                  Date.now()
+                  row.date +
+                  row.currencySign +
+                  row.currency +
+                  row.date
                 }
               >
                 <StyledTableCell component="th" scope="row">
                   {row.descriptionValue}
                 </StyledTableCell>
-                <StyledTableCell>{row.dateValue}</StyledTableCell>
-                <StyledTableCell>{row.incomeTypeValue}</StyledTableCell>
+                <StyledTableCell>{row.date}</StyledTableCell>
+                <StyledTableCell>{row.type}</StyledTableCell>
                 <StyledTableCell>
-                  {formatAmount(row.amountValue, row.currencyValue)}
+                  {formatAmount(row.value.toString(), row.currencySign)}
                 </StyledTableCell>
               </StyledTableRow>
             ))}
@@ -84,4 +84,5 @@ export default function CustomizedTables() {
       </TableContainer>
     </Box>
   );
-}
+};
+export default CustomizedTables;

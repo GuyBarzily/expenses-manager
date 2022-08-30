@@ -15,12 +15,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
 import { CircularProgress, ListItem } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import axios from "axios";
+import { signInAxios } from "../axios";
 import { SignInData } from "../types";
 import { SignUpData } from "../types";
 import { useState } from "react";
 const hash = require("object-hash");
-
 
 const signup = {
   href: AppPages.SignUp,
@@ -53,16 +52,16 @@ const SignIn: React.FC<SignInProps> = ({ handleLogIn }) => {
     const data = new FormData(event.currentTarget);
     const user = {
       email: data.get("email"),
-      password: hash(data.get("password"))
-    }
+      password: hash(data.get("password")),
+    };
     setLoading(true);
-    const res = await axios.post("http://localhost:8080/sign-in", user);
-    console.log(res.data);
+    const res = await signInAxios(user);
     setLoading(false);
-    if(res.data === true)
-    {
-      const emailVar = {email:data.get("email") }
-      window.localStorage.setItem( "userData",JSON.stringify(emailVar));
+    if (res.data == true) {
+      const emailVar = { email: data.get("email") };
+      window.localStorage.setItem("userData", JSON.stringify(emailVar));
+    } else {
+      alert("incorrect email or password");
     }
     handleLogIn();
   };

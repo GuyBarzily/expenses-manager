@@ -1,8 +1,8 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import LayOutContainer from "./containers/LayOutContainer";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AppPages, IncomeData } from "./types";
+import { AppPages, IncomeData, LogInContext, SetLogInContext } from "./types";
 import Expenses from "./pages/Expenses";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
@@ -13,12 +13,19 @@ import {
   FinancialStateContext,
   SetFinancialStateContext,
 } from "./types";
+import Statistics from "./pages/Statistics";
 
 function App() {
   const [financialState, setFinancialState] = useState(BaseFinancialState);
-
+  //const loggedIn = useContext(LogInContext)
   const [loggedIn, setLoggedIn] = useState(false);
+  //const setLoggedIn = useContext(SetLogInContext)
   const [signedUp, setSignedUp] = useState(false);
+  useEffect(() => {
+    console.log("use Effect app");
+    const user = window.localStorage.getItem("userData");
+    console.log(user);
+  });
   return (
     <>
       <Router>
@@ -34,10 +41,16 @@ function App() {
                 />
               }
             />
-            <Route path={AppPages.SignUp} element={
-            <SignUp handleSignUp={() => {
-              setSignedUp(true);
-            }} />} />
+            <Route
+              path={AppPages.SignUp}
+              element={
+                <SignUp
+                  handleSignUp={() => {
+                    setSignedUp(true);
+                  }}
+                />
+              }
+            />
           </Routes>
         )}
         {loggedIn && (
@@ -48,9 +61,17 @@ function App() {
                   <Route path={AppPages.Home} element={<Home />} />
                   <Route path={AppPages.Expenses} element={<Expenses />} />
                   <Route path={AppPages.Income} element={<Income />} />
-                  <Route path={AppPages.SignUp} element={<SignUp handleSignUp={() => {
-              setSignedUp(true);
-            }}  />} />
+                  <Route path={AppPages.Statistics} element={<Statistics />} />
+                  <Route
+                    path={AppPages.SignUp}
+                    element={
+                      <SignUp
+                        handleSignUp={() => {
+                          setSignedUp(true);
+                        }}
+                      />
+                    }
+                  />
                 </Routes>
               </LayOutContainer>
             </SetFinancialStateContext.Provider>

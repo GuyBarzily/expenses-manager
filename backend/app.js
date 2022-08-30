@@ -44,16 +44,38 @@ async function allowAccess(user) {
   else return false;
 }
 
-async function addExpense() {
-  let expense = {
-    amount: "100",
-    currency: "$",
-  };
+async function addExpense(incomeData) {
+  const email = incomeData.userData;
+  console.log("inside addExpense");
   const push = await User.updateOne(
-    { email: "guybarzily@gmail.com" },
-    { $push: { expenses: expense } }
+    { email: email },
+    { $push: { expenses: incomeData } }
   );
   return push;
+}
+
+async function addIncome(incomeData) {
+  const email = incomeData.userData;
+  console.log("inside addIncome");
+  const push = await User.updateOne(
+    { email: email },
+    { $push: { incomes: incomeData } }
+  );
+  return push;
+}
+
+async function getFinancial(email) {
+  console.log("get fin " + email);
+  const income = await User.findOne(email);
+  const incomeArray = income.incomes;
+  const expenesArray = income.expenses;
+  const financial = {
+    income: incomeArray,
+    expenses: expenesArray,
+  };
+
+  // console.log(financial);
+  return financial;
 }
 
 /* ================================================== */
@@ -79,22 +101,41 @@ app.post("/sign-in", async (req, res) => {
     email: userData.email,
     password: userData.password,
   };
-  const result = await addExpense();
-  console.log(result);
 
   const allow = await allowAccess(user);
   res.send(allow);
   console.log(userData);
 });
 
-app.post("add-expense", async (req, res) => {
-  const result = await addExpense();
+app.post("/add-expense", async (req, res) => {
+  const expense = req.body;
+  console.log("expense: " + expense.userData);
+  const result = await addExpense(expense);
+  res.send(result);
+});
+
+app.post("/add-income", async (req, res) => {
+  const income = req.body;
+  console.log("income: " + income.userData);
+  const result = await addIncome(income);
+  res.send(result);
+});
+
+app.post("/all-financial", async (req, res) => {
+  const email = req.body;
+  const result = await getFinancial(email);
   res.send(result);
 });
 
 /* ================================================== */
 
 /* ===============  app.get    ==================== */
+
+// app.get("/all-financial", async (req, res) => {
+//   console.log("get all income");
+//   const result = await getFinancial();
+//   res.send(result);
+// });
 
 /* ================================================== */
 

@@ -5,9 +5,11 @@ export enum AppPages {
   Expenses = "/exp",
   SignUp = "/signup",
   Income = "/income",
+  Statistics = "/statistics"
 }
 
 const IncomeData: Array<{
+  userData?: string;
   descriptionValue: string;
   dateValue: string;
   amountValue: string;
@@ -23,6 +25,7 @@ const SignUpData: Array<FormData> = [];
 export { SignUpData };
 
 const ExpensesData: Array<{
+  userData?: string;
   descriptionValue: string;
   dateValue: string;
   amountValue: string;
@@ -42,43 +45,19 @@ export const SetFinancialStateContext = createContext<React.Dispatch<
   React.SetStateAction<FinancialState>
 > | null>(null);
 
-// {
-//   value: 'USD',
-//   label: '$',
-//   income:0,
-//   expense:0
-// },
-// {
-//   value: 'EUR',
-//   label: '€',
-//   income:0,
-//   expense:0
-// },
-// {
-//   value: 'BTC',
-//   label: '฿',
-//   income:0,
-//   expense:0
-// },
-// {
-//   value: 'JPY',
-//   label: '¥',
-//   income:0,
-//   expense:0
-// },
-// {
-//     value: 'NIS',
-//     label: "₪",
-//     income:0,
-//   expense:0
-// }
-//   ];
+export const LogInContext  = createContext(false);
 
+export const SetLogInContext = createContext<React.Dispatch<
+  React.SetStateAction<boolean>
+> | boolean>(false);
+
+//export const SetLogInContext = createContext
 export interface FinancialState {
   expenses: FinancialItem[];
   income: FinancialItem[];
 }
 export interface FinancialItem {
+  // email:string,
   currency?: Currency;
   currencySign: CurrencySign;
   value: number;

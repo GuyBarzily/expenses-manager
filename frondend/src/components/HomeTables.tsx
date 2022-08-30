@@ -10,8 +10,12 @@ import { FinancialState, CurrencySign } from "../types";
 // import { Currencies } from "../types";
 
 const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
+  const sums = new Map();
+  Object.values(CurrencySign).map((sign) => {
+    sums.set(sign, 0);
+  });
   let i: number = 0;
-  console.log(financialState);
+  // console.log(financialState);
   return (
     <div style={{ width: "", margin: "5%" }}>
       <TableContainer component={Paper}>
@@ -36,11 +40,13 @@ const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
             >
               <TableCell>Total Income</TableCell>
               {Object.values(CurrencySign).map((sign) => {
-                let sum = 0;
+                let sum: number = 0;
                 financialState.income.forEach((income) => {
-                  if (income.currencySign === sign) sum += income.value;
+                  let tmp: number = income.value;
+                  if (income.currencySign === sign) sum = sum + tmp;
                 });
-
+                const current = sums.get(sign);
+                sums.set(sign, current + sum);
                 return (
                   <TableCell key={sign} style={{ textAlign: "center" }}>
                     {sum.toLocaleString()}
@@ -58,6 +64,19 @@ const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
                 financialState.expenses.forEach((expense) => {
                   if (expense.currencySign === sign) sum += expense.value;
                 });
+                const current = sums.get(sign);
+                sums.set(sign, current - sum);
+                return (
+                  <TableCell key={sign} style={{ textAlign: "center" }}>
+                    {sum.toLocaleString()}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+            <TableRow>
+              <TableCell>Total Blance</TableCell>
+              {Object.values(CurrencySign).map((sign) => {
+                let sum = sums.get(sign);
 
                 return (
                   <TableCell key={sign} style={{ textAlign: "center" }}>

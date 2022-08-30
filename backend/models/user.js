@@ -23,9 +23,18 @@ const userSchema = new Schema(
       type: Array,
       required: true,
     },
+    incomes: {
+      type: Array,
+      required: true,
+    },
+
   },
   { timestamps: true }
 );
+
+const IncomeData = {
+  
+}
 
 const User = mongoose.model("User", userSchema);
 

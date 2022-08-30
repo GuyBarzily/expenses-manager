@@ -15,10 +15,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
 import { SignUpData } from "../types";
 import { Link as RouterLink } from "react-router-dom";
-import axios from "axios";
+import { signUpAxios } from "../axios";
 import { CircularProgress } from "@mui/material";
-const hash = require("object-hash");
 
+
+const hash = require("object-hash");
 const signin = {
   href: AppPages.Home,
   text: "Sign in",
@@ -58,8 +59,8 @@ const SignUp: React.FC<SignUpProps> = ({ handleSignUp }) => {
       password: hash(data.get("password")),
     };
     setLoading(true);
-    const res = await axios.post("http://localhost:8080/user", user);
-    console.log("res data " + res.data);
+    const res = await signUpAxios(user);
+    // console.log("res data " + res.data);
     setLoading(false);
   };
   if (loading) {
