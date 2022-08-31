@@ -1,12 +1,8 @@
 import { Typography } from "@mui/material";
-import React from "react";
-import Table from "../components/ExpensesTable";
 import IncomeTable from "../components/IncomeTable";
 
 const Income = () => {
-  const divStyle = {
-    margin: "100%",
-  };
+
   return (
     <div>
       <div>
@@ -21,7 +17,7 @@ const Income = () => {
         </Typography>
       </div>
       <br />
-      <div style={divStyle}>
+      <div >
         <IncomeTable />
       </div>
     </div>

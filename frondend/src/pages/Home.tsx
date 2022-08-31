@@ -18,8 +18,8 @@ const Home = () => {
     getFinancial();
   }, []);
   const appendIncomes = (incomeData: object, expenseData: object) => {
-    console.log(incomeData);
-    console.log(expenseData);
+    // console.log(incomeData);
+    // console.log(expenseData);
     const tmp = JSON.stringify(incomeData);
     const data = JSON.parse(tmp);
     const income: FinancialItem[] = [];
@@ -59,9 +59,9 @@ const Home = () => {
   };
 
   async function getFinancial() {
-    console.log("inside get Financial");
+    // console.log("inside get Financial");
     const res = await getAllFin();
-    console.log(res);
+    // console.log(res);
     const income = res.data.income;
     const expense = res.data.expenses;
     appendIncomes(income, expense);

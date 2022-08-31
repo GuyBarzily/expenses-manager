@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -10,73 +10,160 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Line,
+  LineChart,
 } from "recharts";
-import Table from "../components/ExpensesTable";
-import IncomeTable from "../components/IncomeTable";
+import { ExpensType, FinancialStateContext } from "../types";
 
 const Statistics = () => {
+  const financial = useContext(FinancialStateContext);
+  const income = financial.income;
+  const expense = financial.expenses;
+  const exData = [
+    { name: "Grocery", expense: 0 },
+    { name: "Resturant", expense: 0 },
+    { name: "Utilities", expense: 0 },
+    { name: "Other", expense: 0 },
+  ];
+
+  const inData = [
+    { name: "Salary", income: 0 },
+    { name: "Rental", income: 0 },
+  ];
+
+  const expenseStatistics = () => {
+    expense.forEach((e) => {
+      const index = exData.findIndex((element) => element.name == e.type);
+      if (index != -1) exData[index].expense += e.value;
+    });
+  };
+
+  const incomeStatistics = () => {
+    income.forEach((e) => {
+      const index = inData.findIndex((element) => element.name == e.type);
+      if (index != -1) inData[index].income += e.value;
+    });
+  };
+  const margin = {
+    top: 20,
+    right: 20,
+    left: 20,
+    bottom: 20,
+  };
+
+  const divStyle = {
+    display: "flex",
+    // padding: "40px",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBotton: "20%",
+  };
+
+  const smallDiv = {
+    padding: "40px",
+  };
+
   const data = [
     {
       name: "Page A",
-      expense: 4000,
-      income: 2400,
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
     },
     {
       name: "Page B",
-      expense: 3000,
-      income: 1398,
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
     },
     {
       name: "Page C",
-      expense: 2000,
-      income: 9800,
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
     },
     {
       name: "Page D",
-      expense: 2780,
-      income: 3908,
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
     },
     {
       name: "Page E",
-      expense: 1890,
-      income: 4800,
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
     },
     {
       name: "Page F",
-      expense: 2390,
-      income: 3800,
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
     },
     {
       name: "Page G",
-      expense: 3490,
-      income: 4300,
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
     },
   ];
+
+  useEffect(() => {
+    expenseStatistics();
+    incomeStatistics();
+  }, []);
 
   return (
     <div>
       <div>
         <Typography
-          marginTop="50px"
+          marginTop="20px"
           marginLeft="10px"
-          variant="h2"
+          variant="h3"
           color="primary"
           textAlign="center"
           fontFamily="Helvetica Neue"
         >
-          Income Statistitcs
+          Statistitcs
         </Typography>
       </div>
-      <div>
-        <BarChart width={1000} height={400} data={data}>
+      <div style={divStyle}>
+        <div style={smallDiv}>
+          <BarChart width={500} height={400} data={exData} margin={margin}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend verticalAlign="top" height={36} />
+            <Bar dataKey="expense" fill="#82ca9d" />
+          </BarChart>
+        </div>
+        <div style={smallDiv}>
+          <BarChart width={350} height={400} data={inData} margin={margin}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend verticalAlign="top" height={36} fill="blue" />
+            <Bar dataKey="income" fill="#82ca9d" />
+          </BarChart>
+        </div>
+      </div>
+      <div style={divStyle}>
+        <LineChart
+          width={730}
+          height={250}
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 100 }}
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="expense" fill="#8884d8" />
-          <Bar dataKey="income" fill="#82ca9d" />
-        </BarChart>
+          <Line type="monotone" dataKey="pv" stroke="#8884d8" />
+          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        </LineChart>
       </div>
     </div>
   );
