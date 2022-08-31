@@ -65,7 +65,6 @@ async function addIncome(incomeData) {
 }
 
 async function getFinancial(email) {
-  console.log("get fin " + email);
   const income = await User.findOne(email);
   const incomeArray = income.incomes;
   const expenesArray = income.expenses;

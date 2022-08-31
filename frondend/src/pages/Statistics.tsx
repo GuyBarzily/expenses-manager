@@ -1,3 +1,4 @@
+import { TwoMpOutlined } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import {
@@ -14,9 +15,10 @@ import {
   LineChart,
 } from "recharts";
 import { ExpensType, FinancialStateContext } from "../types";
-
+// heezExpzNo6cb9H26aTrUtvr1A0n4VpT api key
 const Statistics = () => {
   const financial = useContext(FinancialStateContext);
+  // const [exData,setExData] = use
   const income = financial.income;
   const expense = financial.expenses;
   const exData = [
@@ -31,9 +33,28 @@ const Statistics = () => {
     { name: "Rental", income: 0 },
   ];
 
+  const dateData = [
+    { name: "January", income: 100, expense: 0 },
+    { name: "February", income: 0, expense: 0 },
+    { name: "March", income: 0, expense: 0 },
+    { name: "April", income: 0, expense: 0 },
+    { name: "May", income: 0, expense: 0 },
+    { name: "June", income: 0, expense: 0 },
+    { name: "July", income: 0, expense: 0 },
+    { name: "August", income: 0, expense: 0 },
+    { name: "September", income: 0, expense: 0 },
+    { name: "October", income: 0, expense: 0 },
+    { name: "November", income: 0, expense: 0 },
+    { name: "December", income: 0, expense: 0 },
+  ];
+
   const expenseStatistics = () => {
     expense.forEach((e) => {
       const index = exData.findIndex((element) => element.name == e.type);
+      const date = e.date;
+      const month = date.slice(date.indexOf("-") + 1, date.lastIndexOf("-"));
+      const num = Number.parseInt(month);
+      dateData[num - 1].expense += e.value;
       if (index != -1) exData[index].expense += e.value;
     });
   };
@@ -41,6 +62,10 @@ const Statistics = () => {
   const incomeStatistics = () => {
     income.forEach((e) => {
       const index = inData.findIndex((element) => element.name == e.type);
+      const date = e.date;
+      const month = date.slice(date.indexOf("-") + 1, date.lastIndexOf("-"));
+      const num = Number.parseInt(month);
+      dateData[num - 1].income += e.value;
       if (index != -1) inData[index].income += e.value;
     });
   };
@@ -62,64 +87,16 @@ const Statistics = () => {
   const smallDiv = {
     padding: "40px",
   };
-
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
-
-  useEffect(() => {
-    expenseStatistics();
-    incomeStatistics();
-  }, []);
+  expenseStatistics();
+  incomeStatistics();
 
   return (
     <div>
       <div>
         <Typography
-          marginTop="20px"
+          marginTop="10px"
           marginLeft="10px"
-          variant="h3"
+          variant="h4"
           color="primary"
           textAlign="center"
           fontFamily="Helvetica Neue"
@@ -151,18 +128,18 @@ const Statistics = () => {
       </div>
       <div style={divStyle}>
         <LineChart
-          width={730}
-          height={250}
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 100 }}
+          width={1100}
+          height={350}
+          data={dateData}
+          margin={{ top: 5, right: 30, left: 30, bottom: 100 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="income" stroke="#8884d8" />
+          <Line type="monotone" dataKey="expense" stroke="#82ca9d" />
         </LineChart>
       </div>
     </div>

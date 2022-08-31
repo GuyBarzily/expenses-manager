@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FinancialStateContext, IncomeData } from "../types";
 import { styled } from "@mui/material/styles";
-import { Box, TableSortLabel } from "@mui/material";
+import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
 import { useContext } from "react";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -56,6 +56,7 @@ const CustomizedTables = () => {
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Income Type</StyledTableCell>
               <StyledTableCell>Amount </StyledTableCell>
+              <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -76,6 +77,22 @@ const CustomizedTables = () => {
                 <StyledTableCell>{row.type}</StyledTableCell>
                 <StyledTableCell>
                   {formatAmount(row.value.toString(), row.currencySign)}
+                </StyledTableCell>
+                <StyledTableCell>
+                  <ButtonGroup
+                    variant="text"
+                    aria-label="outlined primary button group"
+                    key={
+                      row.descriptionValue +
+                      row.value +
+                      row.currencySign +
+                      row.currency +
+                      row.date
+                    }
+                  >
+                    <Button>Edit</Button>
+                    <Button>Delete</Button>
+                  </ButtonGroup>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

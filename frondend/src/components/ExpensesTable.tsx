@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FinancialStateContext } from "../types";
 import { styled } from "@mui/material/styles";
-import { Box, TableSortLabel } from "@mui/material";
+import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
 import { useContext } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -44,6 +44,13 @@ const CustomizedTables = () => {
   ExpensesData.sort((data1, data2) => {
     return data1.value - data2.value;
   });
+
+  const deleteRow = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    const button: HTMLButtonElement = event.currentTarget;
+    console.log(button);
+  };
   return (
     <Box margin="100px">
       <TableContainer component={Paper}>
@@ -57,6 +64,7 @@ const CustomizedTables = () => {
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Expens Type</StyledTableCell>
               <StyledTableCell>Amount </StyledTableCell>
+              <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -77,6 +85,22 @@ const CustomizedTables = () => {
                 <StyledTableCell>{row.type}</StyledTableCell>
                 <StyledTableCell>
                   {formatAmount(row.value.toString(), row.currencySign)}
+                </StyledTableCell>
+                <StyledTableCell>
+                  <ButtonGroup
+                    variant="text"
+                    aria-label="outlined primary button group"
+                    key={
+                      row.descriptionValue +
+                      row.value +
+                      row.currencySign +
+                      row.currency +
+                      row.date
+                    }
+                  >
+                    <Button>Edit</Button>
+                    <Button onClick={deleteRow}>Delete</Button>
+                  </ButtonGroup>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
