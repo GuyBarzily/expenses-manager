@@ -6,10 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { FinancialStateContext } from "../types";
+import { FinancialStateContext, SetFinancialStateContext } from "../types";
 import { styled } from "@mui/material/styles";
 import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,14 +40,33 @@ const formatAmount = (amount: string, currencySign: string) => {
 
 const CustomizedTables = () => {
   const financialState = useContext(FinancialStateContext);
+  const setFinanacial = useContext(SetFinancialStateContext);
   const ExpensesData = [...financialState.expenses];
   ExpensesData.sort((data1, data2) => {
     return data1.value - data2.value;
   });
 
-  const deleteRow = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteRow = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    rowId: string
+  ) => {
     event.preventDefault();
-
+    const index = ExpensesData.findIndex((row) => {
+      const key =
+        row.descriptionValue +
+        row.value +
+        row.currencySign +
+        row.currency +
+        row.date;
+      return key === rowId;
+    });
+    ExpensesData.splice(index, 1);
+    if (!setFinanacial)
+      throw new Error("setFinancialState was not initialized");
+    setFinanacial({
+      ...financialState,
+      expenses: ExpensesData,
+    });
     const button: HTMLButtonElement = event.currentTarget;
     console.log(button);
   };
@@ -99,7 +118,20 @@ const CustomizedTables = () => {
                     }
                   >
                     <Button>Edit</Button>
-                    <Button onClick={deleteRow}>Delete</Button>
+                    <Button
+                      onClick={(e) => {
+                        const key =
+                          row.descriptionValue +
+                          row.value +
+                          row.currencySign +
+                          row.currency +
+                          row.date;
+
+                        deleteRow(e, key);
+                      }}
+                    >
+                      Delete
+                    </Button>
                   </ButtonGroup>
                 </StyledTableCell>
               </StyledTableRow>

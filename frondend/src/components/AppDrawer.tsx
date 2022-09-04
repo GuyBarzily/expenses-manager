@@ -27,6 +27,14 @@ const linkList: ListItem[] = [
     href: AppPages.Statistics,
     text: "Statistics",
   },
+  {
+    href: AppPages.Admin,
+    text: "Admin",
+  },
+  {
+    href: AppPages.Convert,
+    text: "Convert",
+  },
 ];
 
 const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {
