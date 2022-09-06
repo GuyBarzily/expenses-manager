@@ -23,7 +23,6 @@ import { cp } from "fs";
 function App() {
   const [financialState, setFinancialState] = useState(BaseFinancialState);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [signedUp, setSignedUp] = useState(false);
   useEffect(() => {
     console.log("use Effect app");
     const user = window.localStorage.getItem("userData");

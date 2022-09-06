@@ -81,9 +81,6 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
     } else {
       handleError();
     }
-
-    console.log(BaseFinancialState);
-
     setDispriptionValue("");
     setDateValue("");
     setAmountValue("");

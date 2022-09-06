@@ -16,8 +16,15 @@ const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
   let i: number = 0;
   // console.log(financialState);
   return (
-    <div style={{ width: "", margin: "5%" }}>
-      <TableContainer component={Paper}>
+    <div
+      style={{
+        width: "",
+        marginLeft: "15%",
+        marginRight: "15%",
+        marginTop: "5%",
+      }}
+    >
+      <TableContainer component={Paper} sx={{ backgroundColor: "#F0FFFF" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>

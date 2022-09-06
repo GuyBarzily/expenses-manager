@@ -12,6 +12,7 @@ import {
 const Home = () => {
   const financialState = useContext(FinancialStateContext);
   const setFinancialState = useContext(SetFinancialStateContext);
+
   const handleAddExpenses = (financialItem: FinancialItem) => {
     const newExpenses = [...financialState.expenses, financialItem];
     if (!setFinancialState)
@@ -21,6 +22,7 @@ const Home = () => {
       expenses: newExpenses,
     });
   };
+
   const handleAddIncome = (financialItem: FinancialItem) => {
     const newIncome = [...financialState.income, financialItem];
     if (!setFinancialState)
