@@ -24,7 +24,7 @@ async function addUser(user) {
   const search = {
     email: user.email,
   };
-  const exists = await User.find(search);
+  const exists = await User.find(search).select("email");
   if (exists.length == 0) {
     try {
       const result = await user.save();
@@ -65,16 +65,35 @@ async function addIncome(incomeData) {
 }
 
 async function getFinancial(email) {
-  const income = await User.findOne(email);
+  const income = await User.findOne(email).select("incomes expenses");
   const incomeArray = income.incomes;
   const expenesArray = income.expenses;
   const financial = {
     income: incomeArray,
     expenses: expenesArray,
   };
-
-  // console.log(financial);
   return financial;
+}
+
+async function deleteIncome() {
+  console.log("delete income");
+  const income = {
+    userData: "guybarzily@gmail.com",
+    descriptionValue: "AAAA",
+    dateValue: "2022-08-12",
+  };
+
+  const row = await User.updateOne(
+    { email: "guybarzily@gmail.com" },
+    { $pull: { incomes: income } }
+  );
+  console.log(row);
+}
+
+async function getUsers() {
+  const users = await User.find().select("email createdAt");
+
+  return users;
 }
 
 /* ================================================== */
@@ -108,7 +127,7 @@ app.post("/sign-in", async (req, res) => {
 
 app.post("/add-expense", async (req, res) => {
   const expense = req.body;
-  console.log("expense: " + expense.userData);
+  console.log("expense: " + expense);
   const result = await addExpense(expense);
   res.send(result);
 });
@@ -126,15 +145,27 @@ app.post("/all-financial", async (req, res) => {
   res.send(result);
 });
 
+// app.post("/users", async (req, res) => {
+//   console.log(req);
+//   const result = await getUsers();
+//   console.log(result);
+//   res.send(result);
+// });
+
 /* ================================================== */
 
 /* ===============  app.get    ==================== */
 
-// app.get("/all-financial", async (req, res) => {
-//   console.log("get all income");
-//   const result = await getFinancial();
-//   res.send(result);
-// });
+app.get("/users", async (req, res) => {
+  console.log(req);
+  const result = await getUsers();
+  console.log(result);
+  res.send(result);
+});
+
+app.get("/delete-income", async (req, res) => {
+  deleteIncome();
+});
 
 /* ================================================== */
 

@@ -14,17 +14,16 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppPages } from "../types";
 import { SignUpData } from "../types";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { signUpAxios } from "../axios";
 import { CircularProgress } from "@mui/material";
-
+import { useState } from "react";
 
 const hash = require("object-hash");
 const signin = {
   href: AppPages.Home,
   text: "Sign in",
 };
-
 
 function Copyright(props: any) {
   return (
@@ -47,7 +46,8 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 const SignUp: React.FC<SignUpProps> = ({ handleSignUp }) => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,8 +60,8 @@ const SignUp: React.FC<SignUpProps> = ({ handleSignUp }) => {
     };
     setLoading(true);
     const res = await signUpAxios(user);
-    // console.log("res data " + res.data);
     setLoading(false);
+    navigate(AppPages.Home);
   };
   if (loading) {
     return <CircularProgress />;
@@ -163,7 +163,7 @@ const SignUp: React.FC<SignUpProps> = ({ handleSignUp }) => {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export default SignUp;
 

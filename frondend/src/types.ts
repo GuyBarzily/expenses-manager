@@ -5,7 +5,9 @@ export enum AppPages {
   Expenses = "/exp",
   SignUp = "/signup",
   Income = "/income",
-  Statistics = "/statistics"
+  Statistics = "/statistics",
+  Admin = "/admin",
+  Convert = "/convert",
 }
 
 const IncomeData: Array<{
@@ -13,7 +15,7 @@ const IncomeData: Array<{
   descriptionValue: string;
   dateValue: string;
   amountValue: string;
-  incomeTypeValue: string;
+  typeValue: string;
   currencyValue: string;
 }> = [];
 export { IncomeData };
@@ -29,7 +31,7 @@ const ExpensesData: Array<{
   descriptionValue: string;
   dateValue: string;
   amountValue: string;
-  expensTypeValue: string;
+  typeValue: string;
   currencyValue: string;
 }> = [];
 export { ExpensesData };
@@ -45,11 +47,11 @@ export const SetFinancialStateContext = createContext<React.Dispatch<
   React.SetStateAction<FinancialState>
 > | null>(null);
 
-export const LogInContext  = createContext(false);
+export const LogInContext = createContext(false);
 
 export const SetLogInContext = createContext<React.Dispatch<
   React.SetStateAction<boolean>
-> | boolean>(false);
+> | null>(null);
 
 //export const SetLogInContext = createContext
 export interface FinancialState {

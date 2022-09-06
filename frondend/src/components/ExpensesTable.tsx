@@ -56,7 +56,7 @@ const CustomizedTables = () => {
         row.descriptionValue +
         row.value +
         row.currencySign +
-        row.currency +
+        // row.currency +
         row.date;
       return key === rowId;
     });
@@ -67,8 +67,7 @@ const CustomizedTables = () => {
       ...financialState,
       expenses: ExpensesData,
     });
-    const button: HTMLButtonElement = event.currentTarget;
-    console.log(button);
+    console.log(rowId);
   };
   return (
     <Box margin="100px">
@@ -124,7 +123,7 @@ const CustomizedTables = () => {
                           row.descriptionValue +
                           row.value +
                           row.currencySign +
-                          row.currency +
+                          // row.currency +
                           row.date;
 
                         deleteRow(e, key);

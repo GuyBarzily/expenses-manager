@@ -17,6 +17,8 @@ import Statistics from "./pages/Statistics";
 import Admin from "./pages/Admin";
 import Convert from "./pages/Convert";
 import { getAllFin } from "./axios";
+import { createFin } from "./utils";
+import { cp } from "fs";
 
 function App() {
   const [financialState, setFinancialState] = useState(BaseFinancialState);
@@ -29,37 +31,14 @@ function App() {
       setLoggedIn(true);
       getFinancial();
     }
-  }, []);
-  const appendIncomes = (incomeData: object, expenseData: object) => {
-    const tmp = JSON.stringify(incomeData);
-    const data = JSON.parse(tmp);
-    const income: FinancialItem[] = [];
-    for (let i = 0; i < data.length; i++) {
-      const num: number = +data[i].amountValue.replaceAll(",", "");
-      const tmp: FinancialItem = {
-        descriptionValue: data[i].descriptionValue,
-        date: data[i].dateValue,
-        type: data[i].incomeTypeValue,
-        value: num,
-        currencySign: data[i].currencyValue,
-      };
-      income.push(tmp);
-    }
+  }, [loggedIn]);
 
-    const tmp1 = JSON.stringify(expenseData);
-    const data1 = JSON.parse(tmp1);
-    const expense: FinancialItem[] = [];
-    for (let i = 0; i < data1.length; i++) {
-      const num: number = +data1[i].amountValue.replaceAll(",", "");
-      const tmp: FinancialItem = {
-        descriptionValue: data1[i].descriptionValue,
-        date: data1[i].dateValue,
-        type: data1[i].expensTypeValue,
-        value: num,
-        currencySign: data1[i].currencyValue,
-      };
-      expense.push(tmp);
-    }
+  async function getFinancial() {
+    const res = await getAllFin();
+    const incomeData = res.data.income;
+    const expenseData = res.data.expenses;
+    const income: FinancialItem[] = createFin(incomeData);
+    const expense: FinancialItem[] = createFin(expenseData);
     if (!setFinancialState)
       throw new Error("setFinancialState was not initialized");
     setFinancialState({
@@ -67,68 +46,69 @@ function App() {
       income: income,
       expenses: expense,
     });
-  };
-
-  async function getFinancial() {
-    const res = await getAllFin();
-    const income = res.data.income;
-    const expense = res.data.expenses;
-    appendIncomes(income, expense);
   }
 
   return (
     <>
       <Router>
-        {!loggedIn && (
-          <Routes>
-            <Route
-              path={AppPages.Home}
-              element={
-                <SignIn
-                  handleLogIn={() => {
-                    setLoggedIn(true);
-                  }}
-                />
-              }
-            />
-            <Route
-              path={AppPages.SignUp}
-              element={
-                <SignUp
-                  handleSignUp={() => {
-                    setSignedUp(true);
-                  }}
-                />
-              }
-            />
-          </Routes>
-        )}
-        {loggedIn && (
-          <FinancialStateContext.Provider value={financialState}>
-            <SetFinancialStateContext.Provider value={setFinancialState}>
-              <LayOutContainer>
-                <Routes>
-                  <Route path={AppPages.Home} element={<Home />} />
-                  <Route path={AppPages.Expenses} element={<Expenses />} />
-                  <Route path={AppPages.Income} element={<Income />} />
-                  <Route path={AppPages.Statistics} element={<Statistics />} />
-                  <Route path={AppPages.Admin} element={<Admin />} />
-                  <Route path={AppPages.Convert} element={<Convert />} />
-                  <Route
-                    path={AppPages.SignUp}
-                    element={
-                      <SignUp
-                        handleSignUp={() => {
-                          setSignedUp(true);
-                        }}
-                      />
-                    }
+        <SetLogInContext.Provider value={setLoggedIn}>
+          {!loggedIn && (
+            <Routes>
+              <Route
+                path={AppPages.Home}
+                element={
+                  <SignIn
+                    handleLogIn={() => {
+                      setLoggedIn(true);
+                    }}
                   />
-                </Routes>
-              </LayOutContainer>
-            </SetFinancialStateContext.Provider>
-          </FinancialStateContext.Provider>
-        )}
+                }
+              />
+              <Route
+                path={AppPages.SignUp}
+                element={
+                  <SignUp
+                    handleSignUp={() => {
+                      console.log("handle sign up");
+                      // setSignedUp(true);
+                    }}
+                  />
+                }
+              />
+            </Routes>
+          )}
+          {loggedIn && (
+            <FinancialStateContext.Provider value={financialState}>
+              <SetFinancialStateContext.Provider value={setFinancialState}>
+                <LayOutContainer>
+                  <Routes>
+                    <Route path={AppPages.Home} element={<Home />} />
+                    <Route path={AppPages.Expenses} element={<Expenses />} />
+                    <Route path={AppPages.Income} element={<Income />} />
+                    <Route
+                      path={AppPages.Statistics}
+                      element={<Statistics />}
+                    />
+                    <Route path={AppPages.Admin} element={<Admin />} />
+                    <Route path={AppPages.Convert} element={<Convert />} />
+                    <Route
+                      path={AppPages.SignUp}
+                      element={
+                        <SignUp
+                          handleSignUp={() => {
+                            console.log("handle sign up");
+
+                            // setSignedUp(true);
+                          }}
+                        />
+                      }
+                    />
+                  </Routes>
+                </LayOutContainer>
+              </SetFinancialStateContext.Provider>
+            </FinancialStateContext.Provider>
+          )}
+        </SetLogInContext.Provider>
       </Router>
     </>
   );

@@ -5,10 +5,10 @@ import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import { Link } from "react-router-dom";
+import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 
-import { FC } from "react";
-import { AppPages } from "../types";
+import { FC, useContext } from "react";
+import { AppPages, SetLogInContext } from "../types";
 
 const linkList: ListItem[] = [
   {
@@ -38,6 +38,15 @@ const linkList: ListItem[] = [
 ];
 
 const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const setLogIn = useContext(SetLogInContext);
+  const logOut = () => {
+    console.log("logOut");
+    if (!setLogIn) throw new Error("setLogIn not initialized");
+    setLogIn(false);
+    window.localStorage.removeItem("userData");
+    navigate(AppPages.Home);
+  };
   return (
     <div>
       <React.Fragment>
@@ -52,7 +61,12 @@ const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {
                 </div>
               );
             })}
-            <Button onClick={onClose}>Close</Button>
+            <div>
+              <Button onClick={onClose}>Close</Button>
+            </div>
+            <div>
+              <Button onClick={logOut}>Log Out</Button>
+            </div>
           </div>
         </Drawer>
       </React.Fragment>

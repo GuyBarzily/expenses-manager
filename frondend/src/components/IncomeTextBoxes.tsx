@@ -20,7 +20,7 @@ import { addIncomeAxios } from "../axios";
 const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
 }) => {
- // const [loading, setLoading] = React.useState(false);
+  // const [loading, setLoading] = React.useState(false);
 
   const [descriptionValue, setDispriptionValue] = useState("");
   const [dateValue, setDateValue] = useState("");
@@ -60,25 +60,23 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
     setError(false);
   };
 
-  const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (valitateInput()) {
       handleSuccess();
       console.log("des: " + descriptionValue);
       let a = localStorage.getItem("userData");
-      const user = JSON.parse(a??"");
+      const user = JSON.parse(a ?? "");
       IncomeData.push({
         userData: user.email,
         descriptionValue: descriptionValue,
         dateValue: dateValue,
         amountValue: parseInt(amountValue).toLocaleString(),
-        incomeTypeValue: expensTypeValue,
+        typeValue: expensTypeValue,
         currencyValue: currenciesValue,
       });
-      const current = IncomeData[IncomeData.length-1];
+      const current = IncomeData[IncomeData.length - 1];
       const res = await addIncomeAxios(current);
-
-
 
       handleSubmitProp({
         value: parseInt(amountValue),

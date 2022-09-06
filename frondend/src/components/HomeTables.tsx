@@ -7,7 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FinancialState, CurrencySign } from "../types";
-// import { Currencies } from "../types";
 
 const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
   const sums = new Map();

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import TextBoxes from "../components/ExpensesTextBoxes";
 import HomeTables from "../components/HomeTables";
 import IncomeTextBoxes from "../components/IncomeTextBoxes";
@@ -8,7 +8,6 @@ import {
   FinancialStateContext,
   SetFinancialStateContext,
 } from "../types";
-import { getAllFin } from "../axios";
 
 const Home = () => {
   const financialState = useContext(FinancialStateContext);
@@ -36,6 +35,9 @@ const Home = () => {
     <Box>
       <div>
         <Typography
+          sx={{
+            marginTop: "2%",
+          }}
           //marginTop="20px"
           color="primary.black"
           variant="h3"

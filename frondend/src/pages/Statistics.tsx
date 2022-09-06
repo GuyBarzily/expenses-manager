@@ -1,9 +1,6 @@
-import { TwoMpOutlined } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
-  PieChart,
-  Pie,
   Bar,
   BarChart,
   CartesianGrid,
@@ -14,7 +11,7 @@ import {
   Line,
   LineChart,
 } from "recharts";
-import { ExpensType, FinancialStateContext } from "../types";
+import { FinancialStateContext } from "../types";
 // heezExpzNo6cb9H26aTrUtvr1A0n4VpT api key
 const Statistics = () => {
   const financial = useContext(FinancialStateContext);
@@ -32,9 +29,8 @@ const Statistics = () => {
     { name: "Salary", income: 0 },
     { name: "Rental", income: 0 },
   ];
-
   const dateData = [
-    { name: "January", income: 100, expense: 0 },
+    { name: "January", income: 0, expense: 0 },
     { name: "February", income: 0, expense: 0 },
     { name: "March", income: 0, expense: 0 },
     { name: "April", income: 0, expense: 0 },
