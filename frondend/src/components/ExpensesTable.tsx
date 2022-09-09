@@ -9,9 +9,10 @@ import Paper from "@mui/material/Paper";
 import { FinancialStateContext, SetFinancialStateContext } from "../types";
 import { styled } from "@mui/material/styles";
 import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { deleteRow } from "../axios";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SimpleDialog from "./DeleteDialog";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,6 +42,9 @@ const formatAmount = (amount: string, currencySign: string) => {
 };
 
 const CustomizedTables = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelected] = useState("No");
+  const [removeId, setRemove] = useState(-1);
   const financialState = useContext(FinancialStateContext);
   const setFinanacial = useContext(SetFinancialStateContext);
   const ExpensesData = [...financialState.expenses];
@@ -48,8 +52,20 @@ const CustomizedTables = () => {
     return data1.value - data2.value;
   });
 
-  const del = (event: React.MouseEvent<HTMLButtonElement>, rowId: number) => {
-    event.preventDefault();
+  const handleClose = (value: string) => {
+    console.log("close");
+    setOpen(false);
+    setSelected(value);
+    console.log(removeId);
+    if (value === "Yes") del(removeId);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const del = (rowId: number) => {
+    // event.preventDefault();
     const index = ExpensesData.findIndex((row) => {
       console.log(typeof row.time);
       const key = row.time;
@@ -100,12 +116,18 @@ const CustomizedTables = () => {
                     <Button
                       onClick={(e) => {
                         const key = row.time;
-                        del(e, key);
+                        setRemove(key);
+                        handleClickOpen();
                       }}
                     >
                       <DeleteIcon />
                     </Button>
                   </ButtonGroup>
+                  <SimpleDialog
+                    open={open}
+                    onClose={handleClose}
+                    selectedValue={selectedValue}
+                  ></SimpleDialog>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -39,6 +39,13 @@ const ResponsiveAppBar: FC<ResponsiveAppBarProps> = ({ onMenuClick }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("userData") ?? "");
+    const capitalName = user.email.toUpperCase();
+    setName(capitalName);
+  });
 
   return (
     <AppBar
@@ -148,7 +155,7 @@ const ResponsiveAppBar: FC<ResponsiveAppBarProps> = ({ onMenuClick }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Gemy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={name} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
