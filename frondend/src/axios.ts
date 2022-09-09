@@ -43,33 +43,39 @@ const deleteRow: Function = async (rowId: number, type: string) => {
 };
 
 const getCurrencies: Function = async () => {
-  console.log("getCuren axios");
   const options = {
     method: "GET",
-    url: "https://currency-exchange.p.rapidapi.com/listquotes",
+    // url: "https://currency-exchange.p.rapidapi.com/listquotes",
+    url: "https://currency-converter-pro1.p.rapidapi.com/currencies",
     headers: {
+      // "X-RapidAPI-Key": "96902ee1d2msh3e472de85405f0bp15687ajsn2195466e9a06",
+      // "X-RapidAPI-Host": "currency-exchange.p.rapidapi.com",
       "X-RapidAPI-Key": "96902ee1d2msh3e472de85405f0bp15687ajsn2195466e9a06",
-      "X-RapidAPI-Host": "currency-exchange.p.rapidapi.com",
+      "X-RapidAPI-Host": "currency-converter-pro1.p.rapidapi.com",
     },
   };
   const res = await axios.request(options);
-  return res.data;
+  return res.data.result;
 };
 
 const convert: Function = async (params: object) => {
   console.log("parms axios: " + params);
   const options = {
     method: "GET",
-    url: "https://currency-exchange.p.rapidapi.com/exchange",
+    // url: "https://currency-exchange.p.rapidapi.com/exchange",
+    url: "https://currency-converter-pro1.p.rapidapi.com/convert",
     params: params,
     headers: {
+      // "X-RapidAPI-Key": "96902ee1d2msh3e472de85405f0bp15687ajsn2195466e9a06",
+      // "X-RapidAPI-Host": "currency-exchange.p.rapidapi.com",
       "X-RapidAPI-Key": "96902ee1d2msh3e472de85405f0bp15687ajsn2195466e9a06",
-      "X-RapidAPI-Host": "currency-exchange.p.rapidapi.com",
+      "X-RapidAPI-Host": "currency-converter-pro1.p.rapidapi.com",
     },
   };
 
   const res = await axios.request(options);
-  return res.data;
+  console.log(res.data.result);
+  return res.data.result;
 };
 
 export {

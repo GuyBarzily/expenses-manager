@@ -16,9 +16,6 @@ import { AppPages } from "../types";
 import { CircularProgress, ListItem } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { signInAxios } from "../axios";
-import { SignInData } from "../types";
-import { SignUpData } from "../types";
-import { useState } from "react";
 const hash = require("object-hash");
 
 const signup = {
