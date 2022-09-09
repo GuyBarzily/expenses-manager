@@ -46,7 +46,6 @@ async function allowAccess(user) {
 
 async function addExpense(incomeData) {
   const email = incomeData.userData;
-  console.log("inside addExpense");
   const push = await User.updateOne(
     { email: email },
     { $push: { expenses: incomeData } }
@@ -56,7 +55,6 @@ async function addExpense(incomeData) {
 
 async function addIncome(incomeData) {
   const email = incomeData.userData;
-  console.log("inside addIncome");
   const push = await User.updateOne(
     { email: email },
     { $push: { incomes: incomeData } }
@@ -75,19 +73,22 @@ async function getFinancial(email) {
   return financial;
 }
 
-async function deleteIncome() {
-  console.log("delete income");
-  const income = {
-    userData: "guybarzily@gmail.com",
-    descriptionValue: "AAAA",
-    dateValue: "2022-08-12",
+async function deleteRow(rowId) {
+  const time = {
+    time: rowId.rowId,
   };
-
-  const row = await User.updateOne(
-    { email: "guybarzily@gmail.com" },
-    { $pull: { incomes: income } }
-  );
-  console.log(row);
+  const type = rowId.type;
+  if (type === "expenses") {
+    const row = await User.updateOne(
+      { email: rowId.email },
+      { $pull: { expenses: time } }
+    );
+  } else {
+    const row = await User.updateOne(
+      { email: rowId.email },
+      { $pull: { incomes: time } }
+    );
+  }
 }
 
 async function getUsers() {
@@ -127,14 +128,12 @@ app.post("/sign-in", async (req, res) => {
 
 app.post("/add-expense", async (req, res) => {
   const expense = req.body;
-  console.log("expense: " + expense);
   const result = await addExpense(expense);
   res.send(result);
 });
 
 app.post("/add-income", async (req, res) => {
   const income = req.body;
-  console.log("income: " + income.userData);
   const result = await addIncome(income);
   res.send(result);
 });
@@ -144,13 +143,10 @@ app.post("/all-financial", async (req, res) => {
   const result = await getFinancial(email);
   res.send(result);
 });
-
-// app.post("/users", async (req, res) => {
-//   console.log(req);
-//   const result = await getUsers();
-//   console.log(result);
-//   res.send(result);
-// });
+app.post("/delete", async (req, res) => {
+  const data = req.body;
+  deleteRow(data);
+});
 
 /* ================================================== */
 
@@ -161,10 +157,6 @@ app.get("/users", async (req, res) => {
   const result = await getUsers();
   console.log(result);
   res.send(result);
-});
-
-app.get("/delete-income", async (req, res) => {
-  deleteIncome();
 });
 
 /* ================================================== */

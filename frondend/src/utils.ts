@@ -11,6 +11,7 @@ const createFin = (data: any) => {
       type: data[i].typeValue,
       value: num,
       currencySign: data[i].currencyValue,
+      time: data[i].time,
     };
     income.push(tmp);
   }

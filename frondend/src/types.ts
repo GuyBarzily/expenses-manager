@@ -17,6 +17,7 @@ const IncomeData: Array<{
   amountValue: string;
   typeValue: string;
   currencyValue: string;
+  time: number;
 }> = [];
 export { IncomeData };
 
@@ -33,6 +34,7 @@ const ExpensesData: Array<{
   amountValue: string;
   typeValue: string;
   currencyValue: string;
+  time: number;
 }> = [];
 export { ExpensesData };
 
@@ -66,6 +68,7 @@ export interface FinancialItem {
   descriptionValue: string;
   type: string;
   date: string;
+  time: number;
 }
 
 export enum Currency {

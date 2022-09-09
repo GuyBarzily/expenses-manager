@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import {
   Alert,
   Button,
-  CircularProgress,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -14,14 +13,11 @@ import {
 import { useState } from "react";
 import { CurrencySign, FinancialItem, IncomeData } from "../types";
 import { IncomeType } from "../types";
-import axios from "axios";
 import { addIncomeAxios } from "../axios";
 
 const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
 }) => {
-  // const [loading, setLoading] = React.useState(false);
-
   const [descriptionValue, setDispriptionValue] = useState("");
   const [dateValue, setDateValue] = useState("");
   const [amountValue, setAmountValue] = useState("");
@@ -61,10 +57,10 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const time = Date.now();
     event.preventDefault();
     if (valitateInput()) {
       handleSuccess();
-      console.log("des: " + descriptionValue);
       let a = localStorage.getItem("userData");
       const user = JSON.parse(a ?? "");
       IncomeData.push({
@@ -74,6 +70,7 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
         amountValue: parseInt(amountValue).toLocaleString(),
         typeValue: expensTypeValue,
         currencyValue: currenciesValue,
+        time: time,
       });
       const current = IncomeData[IncomeData.length - 1];
       const res = await addIncomeAxios(current);
@@ -84,11 +81,11 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
         descriptionValue: descriptionValue,
         type: expensTypeValue,
         date: dateValue,
+        time: time,
       });
     } else {
       handleError();
     }
-    console.log(IncomeData);
     setDispriptionValue("");
     setDateValue("");
     setAmountValue("");

@@ -30,6 +30,18 @@ const getUsers: Function = async () => {
   return res;
 };
 
+const deleteRow: Function = async (rowId: number, type: string) => {
+  const email = JSON.parse(window.localStorage.getItem("userData") ?? "");
+  const req = {
+    email: email.email,
+    rowId: rowId,
+    type: type,
+  };
+  console.log("delete" + typeof req);
+  const res = await axios.post("http://localhost:8080/delete", req);
+  return res;
+};
+
 const getCurrencies: Function = async () => {
   console.log("getCuren axios");
   const options = {
@@ -57,7 +69,7 @@ const convert: Function = async (params: object) => {
   };
 
   const res = await axios.request(options);
-    return res.data;
+  return res.data;
 };
 
 export {
@@ -69,4 +81,5 @@ export {
   getUsers,
   getCurrencies,
   convert,
+  deleteRow,
 };

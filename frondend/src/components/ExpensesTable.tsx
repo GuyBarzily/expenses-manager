@@ -10,6 +10,8 @@ import { FinancialStateContext, SetFinancialStateContext } from "../types";
 import { styled } from "@mui/material/styles";
 import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
 import { useContext, useEffect } from "react";
+import { deleteRow } from "../axios";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,18 +48,11 @@ const CustomizedTables = () => {
     return data1.value - data2.value;
   });
 
-  const deleteRow = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    rowId: string
-  ) => {
+  const del = (event: React.MouseEvent<HTMLButtonElement>, rowId: number) => {
     event.preventDefault();
     const index = ExpensesData.findIndex((row) => {
-      const key =
-        row.descriptionValue +
-        row.value +
-        row.currencySign +
-        // row.currency +
-        row.date;
+      console.log(typeof row.time);
+      const key = row.time;
       return key === rowId;
     });
     ExpensesData.splice(index, 1);
@@ -67,7 +62,7 @@ const CustomizedTables = () => {
       ...financialState,
       expenses: ExpensesData,
     });
-    console.log(rowId);
+    const res = deleteRow(rowId, "expenses");
   };
   return (
     <Box margin="100px">
@@ -77,7 +72,6 @@ const CustomizedTables = () => {
             <TableRow>
               <StyledTableCell>
                 <TableSortLabel direction="asc">Description</TableSortLabel>
-                {/* Description */}
               </StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Expens Type</StyledTableCell>
@@ -87,15 +81,7 @@ const CustomizedTables = () => {
           </TableHead>
           <TableBody>
             {ExpensesData.map((row) => (
-              <StyledTableRow
-                key={
-                  row.descriptionValue +
-                  row.value +
-                  row.currencySign +
-                  row.currency +
-                  row.date
-                }
-              >
+              <StyledTableRow key={row.time}>
                 <StyledTableCell component="th" scope="row">
                   {row.descriptionValue}
                 </StyledTableCell>
@@ -108,28 +94,16 @@ const CustomizedTables = () => {
                   <ButtonGroup
                     variant="text"
                     aria-label="outlined primary button group"
-                    key={
-                      row.descriptionValue +
-                      row.value +
-                      row.currencySign +
-                      row.currency +
-                      row.date
-                    }
+                    key={row.time}
                   >
-                    <Button>Edit</Button>
+                    {/* <Button>Edit</Button> */}
                     <Button
                       onClick={(e) => {
-                        const key =
-                          row.descriptionValue +
-                          row.value +
-                          row.currencySign +
-                          // row.currency +
-                          row.date;
-
-                        deleteRow(e, key);
+                        const key = row.time;
+                        del(e, key);
                       }}
                     >
-                      Delete
+                      <DeleteIcon />
                     </Button>
                   </ButtonGroup>
                 </StyledTableCell>

@@ -30,7 +30,6 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currenciesValue, setCurrenciesValue] = useState("");
-
   const validateInput: Function = () => {
     if (
       descriptionValue !== "" &&
@@ -54,6 +53,7 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const time = Date.now();
     event.preventDefault();
     if (validateInput()) {
       handleSuccess();
@@ -66,6 +66,7 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
         amountValue: parseInt(amountValue).toLocaleString(),
         typeValue: expensTypeValue,
         currencyValue: currenciesValue,
+        time: Number(time),
       });
 
       const current = ExpensesData[ExpensesData.length - 1];
@@ -77,6 +78,7 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
         descriptionValue: descriptionValue,
         type: expensTypeValue,
         date: dateValue,
+        time: Number(time),
       });
     } else {
       handleError();
@@ -102,7 +104,9 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
       <div>
         <TextField
           error={error}
-          onChange={(e) => setDispriptionValue(e.target.value)}
+          onChange={(e) => {
+            setDispriptionValue(e.target.value);
+          }}
           required
           value={descriptionValue}
           id="discription-input"
