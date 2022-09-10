@@ -41,7 +41,6 @@ const AppDrawer: FC<AppDrawerProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const setLogIn = useContext(SetLogInContext);
   const logOut = () => {
-    console.log("logOut");
     if (!setLogIn) throw new Error("setLogIn not initialized");
     setLogIn(false);
     window.localStorage.removeItem("userData");

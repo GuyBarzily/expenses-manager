@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import IncomeTable from "../components/IncomeTable";
 
 const Income = () => {
-
   return (
     <div>
       <div>
@@ -17,7 +16,7 @@ const Income = () => {
         </Typography>
       </div>
       <br />
-      <div >
+      <div>
         <IncomeTable />
       </div>
     </div>

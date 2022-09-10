@@ -14,7 +14,6 @@ const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
     sums.set(sign, 0);
   });
   let i: number = 0;
-  // console.log(financialState);
   return (
     <div
       style={{
@@ -38,7 +37,6 @@ const BasicTable: React.FC<HomeTableProps> = ({ financialState }) => {
               })}
             </TableRow>
           </TableHead>
-
           <TableBody>
             <TableRow
               key={"Income row"}

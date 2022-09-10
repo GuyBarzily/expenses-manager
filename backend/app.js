@@ -83,11 +83,13 @@ async function deleteRow(rowId) {
       { email: rowId.email },
       { $pull: { expenses: time } }
     );
+    return row;
   } else {
     const row = await User.updateOne(
       { email: rowId.email },
       { $pull: { incomes: time } }
     );
+    return row;
   }
 }
 
@@ -145,7 +147,8 @@ app.post("/all-financial", async (req, res) => {
 });
 app.post("/delete", async (req, res) => {
   const data = req.body;
-  deleteRow(data);
+  const result = await deleteRow(data);
+  res.send(result);
 });
 
 /* ================================================== */
@@ -155,7 +158,6 @@ app.post("/delete", async (req, res) => {
 app.get("/users", async (req, res) => {
   console.log(req);
   const result = await getUsers();
-  console.log(result);
   res.send(result);
 });
 

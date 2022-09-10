@@ -11,14 +11,10 @@ import {
   Select,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  BaseFinancialState,
-  CurrencySign,
-  ExpensesData,
-  FinancialItem,
-} from "../types";
+import { CurrencySign, ExpensesData, FinancialItem } from "../types";
 import { ExpensType } from "../types";
 import { addExpenseAxios } from "../axios";
+import { validateInput } from "../utils";
 
 const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
@@ -30,19 +26,6 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currenciesValue, setCurrenciesValue] = useState("");
-  const validateInput: Function = () => {
-    if (
-      descriptionValue !== "" &&
-      dateValue !== "" &&
-      amountValue !== "" &&
-      expensTypeValue !== "" &&
-      currenciesValue !== ""
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   const handleError = () => {
     setError(!error);
   };
@@ -55,7 +38,15 @@ const FormPropsTextFields: React.FC<ExpenseTextBoxesProps> = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const time = Date.now();
     event.preventDefault();
-    if (validateInput()) {
+    if (
+      validateInput(
+        descriptionValue,
+        dateValue,
+        amountValue,
+        expensTypeValue,
+        currenciesValue
+      )
+    ) {
       handleSuccess();
       let a = localStorage.getItem("userData");
       const user = JSON.parse(a ?? "");

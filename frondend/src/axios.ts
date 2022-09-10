@@ -37,7 +37,6 @@ const deleteRow: Function = async (rowId: number, type: string) => {
     rowId: rowId,
     type: type,
   };
-  console.log("delete" + typeof req);
   const res = await axios.post("http://localhost:8080/delete", req);
   return res;
 };

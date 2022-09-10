@@ -10,10 +10,10 @@ import {
 import { blue } from "@mui/material/colors";
 import { SimpleDialogProps } from "../types";
 import RemoveIcon from "@mui/icons-material/Remove";
-const options = ["Yes", "No"];
 
 function SimpleDialog(props: SimpleDialogProps) {
   const { onClose, selectedValue, open } = props;
+  const options = ["Yes", "No"];
 
   const handleClose = () => {
     onClose(selectedValue);

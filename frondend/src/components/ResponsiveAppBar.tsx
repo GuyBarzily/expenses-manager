@@ -18,13 +18,13 @@ const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar: FC<ResponsiveAppBarProps> = ({ onMenuClick }) => {
+  const [name, setName] = useState("");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,7 +39,6 @@ const ResponsiveAppBar: FC<ResponsiveAppBarProps> = ({ onMenuClick }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const [name, setName] = useState("");
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("userData") ?? "");

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { CurrencySign, FinancialItem, IncomeData } from "../types";
 import { IncomeType } from "../types";
 import { addIncomeAxios } from "../axios";
+import { validateInput } from "../utils";
 
 const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   handleSubmit: handleSubmitProp,
@@ -25,28 +26,6 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currenciesValue, setCurrenciesValue] = useState("");
-  const valitateInput: Function = () => {
-    if (
-      descriptionValue === "" ||
-      dateValue === "" ||
-      amountValue === "" ||
-      expensTypeValue === "" ||
-      currenciesValue === ""
-    )
-      return false;
-
-    let date: string[] = dateValue.split("-");
-    let currentDate: Date = new Date();
-    if (
-      parseInt(date[0]) > currentDate.getFullYear() ||
-      parseInt(date[0]) < 1900
-    ) {
-      return false;
-    }
-
-    return true;
-  };
-
   const handleError = () => {
     setError(!error);
   };
@@ -59,7 +38,15 @@ const FormPropsTextFields: React.FC<IncomeTextBoxesProps> = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const time = Date.now();
     event.preventDefault();
-    if (valitateInput()) {
+    if (
+      validateInput(
+        descriptionValue,
+        dateValue,
+        amountValue,
+        expensTypeValue,
+        currenciesValue
+      )
+    ) {
       handleSuccess();
       let a = localStorage.getItem("userData");
       const user = JSON.parse(a ?? "");

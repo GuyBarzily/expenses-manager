@@ -1,50 +1,28 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FinancialStateContext, SetFinancialStateContext } from "../types";
-import { styled } from "@mui/material/styles";
-import { Box, Button, ButtonGroup, TableSortLabel } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  CircularProgress,
+  TableSortLabel,
+} from "@mui/material";
 import { useContext, useState } from "react";
 import { deleteRow } from "../axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SimpleDialog from "./DeleteDialog";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "gray",
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-
-const formatAmount = (amount: string, currencySign: string) => {
-  var str = amount.split(".");
-  str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  str.push("      " + currencySign);
-  return str.join("");
-};
+import { StyledTableCell, StyledTableRow, formatAmount } from "../utils";
 
 const CustomizedTables = () => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelected] = useState("No");
   const [removeId, setRemove] = useState(-1);
+  const [loading, setLoading] = useState(false);
   const financialState = useContext(FinancialStateContext);
   const setFinanacial = useContext(SetFinancialStateContext);
   const IncomeData = [...financialState.income];
@@ -56,7 +34,6 @@ const CustomizedTables = () => {
     console.log("close");
     setOpen(false);
     setSelected(value);
-    console.log(removeId);
     if (value === "Yes") del(removeId);
   };
 
@@ -64,7 +41,7 @@ const CustomizedTables = () => {
     setOpen(true);
   };
 
-  const del = (rowId: number) => {
+  const del = async (rowId: number) => {
     const index = IncomeData.findIndex((row) => {
       const key = row.time;
       return key === rowId;
@@ -76,10 +53,29 @@ const CustomizedTables = () => {
       ...financialState,
       income: IncomeData,
     });
-    const res = deleteRow(rowId, "income");
+    setLoading(true);
+    const res = await deleteRow(rowId, "income");
+    setLoading(false);
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          alignSelf: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Box margin="100px">
+      <SimpleDialog
+        open={open}
+        onClose={handleClose}
+        selectedValue={selectedValue}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -121,11 +117,6 @@ const CustomizedTables = () => {
                         <DeleteIcon />
                       </Button>
                     </ButtonGroup>
-                    <SimpleDialog
-                      open={open}
-                      onClose={handleClose}
-                      selectedValue={selectedValue}
-                    ></SimpleDialog>
                   </StyledTableCell>
                 </StyledTableRow>
               );
